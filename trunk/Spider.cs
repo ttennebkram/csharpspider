@@ -177,12 +177,12 @@ namespace Spider {
          	}
          	catch (Exception e) {
             	s.writeStatus("ERROR: " + e.Message);
-                s.writeStatus("page - " + startp.getUrl() + "\n\treferred to by:");
+                s.writeStatus("\tpage - " + startp.getUrl() + "\n\t\treferred to by:");
 
                 List<string> curr_refs = startp.getReferencedByUrls();
                 for (int i = 0; i < curr_refs.Count; i++)
                 {
-                    s.writeStatus("\t" + curr_refs.ElementAt(i));
+                    s.writeStatus("\t\t\t" + curr_refs.ElementAt(i));
                 }
 			}
 
