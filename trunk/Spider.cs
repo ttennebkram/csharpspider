@@ -98,8 +98,7 @@ namespace Spider {
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
 
-            List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this.baseUrl, this);
-            this.writeStatus("made it here!");
+            List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
 
             this.spiderHelper(startLinks);
 
@@ -164,6 +163,7 @@ namespace Spider {
          */
         public static List<SpiderPage> getLinks(SpiderPage startp, Spider s) {
             List<string> pre_pages = new List<string>();
+            List<SpiderPage> new_pages = new List<SpiderPage>();
 
             StringBuilder sb = new StringBuilder();
             byte[] buf = new byte[8192];
@@ -171,75 +171,65 @@ namespace Spider {
 			HttpWebRequest req = (HttpWebRequest)WebRequest.Create(startp.getUrl());
           	//req.Timeout = 1000;
 
-           	HttpWebResponse resp = null;
+           	/* HttpWebResponse resp = null;
          	try {
            		resp = (HttpWebResponse) req.GetResponse();
          	}
          	catch (Exception e) {
             	s.writeStatus(e.Message);
-			}
+			} */
 
-			Stream resp_stream = resp.GetResponseStream();
-			string temp_string = null;
-			int count = 0;
-			do {
-        		count = resp_stream.Read(buf, 0, buf.Length);
-             	if (count != 0) {
-             		temp_string = Encoding.ASCII.GetString(buf, 0, count);
-               		sb.Append(temp_string);
-              	}
-           	}
-			while (count > 0);
-
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(sb.ToString());
-            var linksOnPage = from lnks in doc.DocumentNode.Descendants()
-                              where lnks.Name == "a" &&
-                                    lnks.Attributes["href"] != null &&
-                                    lnks.InnerText.Trim().Length > 0
-                              select new {
-                                  Url = lnks.Attributes["href"].Value,
-                              };
-
-            foreach (var link in linksOnPage) {
-                if (link.Url.StartsWith("/")) {
-                    if (link.Url.EndsWith("/")) {
-                        pre_pages.Add(s.getBaseUrl() + link.Url);
-                    }
-                    else {
-                        pre_pages.Add(s.getBaseUrl() + link.Url + "/");
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+            if (resp != null)
+            {
+                Stream resp_stream = resp.GetResponseStream();
+                string temp_string = null;
+                int count = 0;
+                do
+                {
+                    count = resp_stream.Read(buf, 0, buf.Length);
+                    if (count != 0)
+                    {
+                        temp_string = Encoding.ASCII.GetString(buf, 0, count);
+                        sb.Append(temp_string);
                     }
                 }
-            };
+                while (count > 0);
 
-            List<string> distinct_pre_pages = pre_pages.Distinct().ToList();
-            List<SpiderPage> pages = new List<SpiderPage>();
-            for (int m = 0; m < distinct_pre_pages.Count; m++) {
-                pages.Add(new SpiderPage(distinct_pre_pages.ElementAt(m), startp.getUrl()));
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(sb.ToString());
+                var linksOnPage = from lnks in doc.DocumentNode.Descendants()
+                                  where lnks.Name == "a" &&
+                                        lnks.Attributes["href"] != null &&
+                                        lnks.InnerText.Trim().Length > 0
+                                  select new
+                                  {
+                                      Url = lnks.Attributes["href"].Value,
+                                  };
+
+                foreach (var link in linksOnPage)
+                {
+                    if (link.Url.StartsWith("/"))
+                    {
+                        if (link.Url.EndsWith("/"))
+                        {
+                            pre_pages.Add(s.getBaseUrl() + link.Url);
+                        }
+                        else
+                        {
+                            pre_pages.Add(s.getBaseUrl() + link.Url + "/");
+                        }
+                    }
+                };
+
+                List<string> distinct_pre_pages = pre_pages.Distinct().ToList();
+                for (int m = 0; m < distinct_pre_pages.Count; m++)
+                {
+                    new_pages.Add(new SpiderPage(distinct_pre_pages.ElementAt(m), startp.getUrl()));
+                }
             }
 
-            return pages;
-        }
-
-        static void Main(string[] args) {
-            string baseUrl = "http://www.ideaeng.com";
-            string startUrl = "http://www.ideaeng.com/";
-
-            Spider s = new Spider(baseUrl, startUrl, 500);
-            s.spider();
-
-            List<SpiderPage> pages = s.getResults();
-
-            for (int i = 0; i < pages.Count; i++) {
-                System.Console.WriteLine(pages.ElementAt(i).getUrl());
-                for (int j = 0; j < pages.ElementAt(i).getReferencedByUrls().Count; j++) {
-                    s.writeStatus("\t referenced at - " + pages.ElementAt(i).getReferencedByUrls().ElementAt(j));
-                }
-                s.writeStatus("\t-------------------------------------------------------\n");
-                for (int k = 0; k < pages.ElementAt(i).getLinkingToUrls().Count; k++) {
-                    s.writeStatus("\t links to - " + pages.ElementAt(i).getLinkingToUrls().ElementAt(k));
-                }
-            }
+            return new_pages;
         }
     }
 }
