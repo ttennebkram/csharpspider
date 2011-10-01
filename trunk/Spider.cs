@@ -171,15 +171,21 @@ namespace Spider {
 			HttpWebRequest req = (HttpWebRequest)WebRequest.Create(startp.getUrl());
           	//req.Timeout = 1000;
 
-           	/* HttpWebResponse resp = null;
+           	HttpWebResponse resp = null;
          	try {
            		resp = (HttpWebResponse) req.GetResponse();
          	}
          	catch (Exception e) {
-            	s.writeStatus(e.Message);
-			} */
+            	s.writeStatus("ERROR: " + e.Message);
+                s.writeStatus("page - " + startp.getUrl() + "\n\treferred to by:");
 
-            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+                List<string> curr_refs = startp.getReferencedByUrls();
+                for (int i = 0; i < curr_refs.Count; i++)
+                {
+                    s.writeStatus("\t" + curr_refs.ElementAt(i));
+                }
+			}
+
             if (resp != null)
             {
                 Stream resp_stream = resp.GetResponseStream();
