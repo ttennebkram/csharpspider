@@ -117,7 +117,6 @@ namespace Spider {
                 //all the new links we find to call spiderHelper() with next time
                 List<SpiderPage> n_pages = new List<SpiderPage>();
 
-
                 this.writeStatus("spiderHelper() - links found in this iteration: " + pages.Count);
                 for (int i = 0; i < pages.Count; i++) {
                     bool found = false;
@@ -180,22 +179,18 @@ namespace Spider {
                 s.writeStatus("\tpage - " + startp.getUrl() + "\n\t\treferred to by:");
 
                 List<string> curr_refs = startp.getReferencedByUrls();
-                for (int i = 0; i < curr_refs.Count; i++)
-                {
+                for (int i = 0; i < curr_refs.Count; i++) {
                     s.writeStatus("\t\t\t" + curr_refs.ElementAt(i));
                 }
 			}
 
-            if (resp != null)
-            {
+            if (resp != null) {
                 Stream resp_stream = resp.GetResponseStream();
                 string temp_string = null;
                 int count = 0;
-                do
-                {
+                do {
                     count = resp_stream.Read(buf, 0, buf.Length);
-                    if (count != 0)
-                    {
+                    if (count != 0) {
                         temp_string = Encoding.ASCII.GetString(buf, 0, count);
                         sb.Append(temp_string);
                     }
@@ -208,29 +203,23 @@ namespace Spider {
                                   where lnks.Name == "a" &&
                                         lnks.Attributes["href"] != null &&
                                         lnks.InnerText.Trim().Length > 0
-                                  select new
-                                  {
+                                  select new {
                                       Url = lnks.Attributes["href"].Value,
                                   };
 
-                foreach (var link in linksOnPage)
-                {
-                    if (link.Url.StartsWith("/"))
-                    {
-                        if (link.Url.EndsWith("/"))
-                        {
+                foreach (var link in linksOnPage) {
+                    if (link.Url.StartsWith("/")) {
+                        if (link.Url.EndsWith("/")) {
                             pre_pages.Add(s.getBaseUrl() + link.Url);
                         }
-                        else
-                        {
+                        else {
                             pre_pages.Add(s.getBaseUrl() + link.Url + "/");
                         }
                     }
                 };
 
                 List<string> distinct_pre_pages = pre_pages.Distinct().ToList();
-                for (int m = 0; m < distinct_pre_pages.Count; m++)
-                {
+                for (int m = 0; m < distinct_pre_pages.Count; m++) {
                     new_pages.Add(new SpiderPage(distinct_pre_pages.ElementAt(m), startp.getUrl()));
                 }
             }
