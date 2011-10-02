@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading;
+
 using Spider;
 
 namespace SpiderConsoleApp {
@@ -16,7 +18,9 @@ namespace SpiderConsoleApp {
             
             s.spider();
 
+            Thread.Sleep(600000);
             List<SpiderPage> results = s.getResults();
+
             for (int i = 0; i < results.Count; i++) {
                 SpiderPage curr = results.ElementAt(i);
                 List<string> curr_links = curr.getLinkingToUrls();
