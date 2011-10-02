@@ -1,0 +1,6 @@
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\bin\Debug\SpiderConsoleApp.exe
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\bin\Debug\SpiderConsoleApp.pdb
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\obj\x86\Debug\SpiderConsoleApp.exe
+C:\Users\Administrator\Documents\Visual Studio 2010\Projects\Spider_solution\Spider_project\obj\x86\Debug\SpiderConsoleApp.pdb
