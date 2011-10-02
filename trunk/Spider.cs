@@ -5,8 +5,8 @@ using System.Text;
 using System.Net;
 
 using System.IO;
-using System.ComponentModel;
 using System.Threading;
+using System.ComponentModel;
 
 using HtmlAgilityPack;
 
@@ -87,8 +87,7 @@ namespace Spider {
             }
         }
 
-        /* spider() -       Actually begin spidering; getResults() will return null as implemented
-         *                  currently until this is done.
+        /* spider() -       Actually begin spidering- set things up and do the actual work by calling spiderHelper()
          */
         public void spider() {
             this.results_available = false;
@@ -99,8 +98,8 @@ namespace Spider {
             this.writeStatus("spider() - starting crawl...");
 
             List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
-
-            for (int i = 0; i < startLinks.Count; i++) {
+			int i = 0;
+            while (i < startLinks.Count) {
                 List<SpiderPage> next_links = new List<SpiderPage>();
                 for (int k = i; k < i + 5; k++) {
                     if (k == startLinks.Count) {
@@ -117,13 +116,15 @@ namespace Spider {
 
                 i += 5;
             }
+
+			this.results_available = true;
         }
 
         /* spiderHelper -   Actual recursive method for spidering a site, not to be called explicitly
          *                  other than from within spider().
          *  @pages -        A list of SpiderPage objects representing the pages to scan on this pass.
          */
-        public void spiderHelper(List<SpiderPage> pages) {
+        void spiderHelper(List<SpiderPage> pages) {
 
             // basecase - we'll eventually call spiderHelper() with an emptly list because
             // all the pages from the last pass had been found already
@@ -151,15 +152,18 @@ namespace Spider {
                                         this.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
                                     }
                                 }
+								break;
                             }
                         }
+
+						// if this is a new page...
                         if (!found) {
                             this.masterResults.Add(curr_page);
                             new_page_found_index = masterResults.Count - 1;
                         }
                     }
 
-                    // if this is a new page...
+                    // if this is a new page (outside thread lock now)...
                     if (!found) {
                         List<SpiderPage> temp_n_pages = getLinks(this.masterResults.ElementAt(new_page_found_index), this);
                         for (int k = 0; k < temp_n_pages.Count; k++) {
