@@ -11,7 +11,7 @@ namespace Spider {
         List<string> linking_to_urls;
         List<string> referenced_by_urls;
 
-        /* SpiderPage() -        make a new SpiderPage object representing a page visited while spidering a site
+        /* SpiderPage() -   make a new SpiderPage object representing a page visited while spidering a site
          *  @url -          the URL of this page
          *  @ref_url -      the referring URL of this page- all pages have to start with one referring page
          */
