@@ -100,9 +100,23 @@ namespace Spider {
 
             List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
 
-            this.spiderHelper(startLinks);
+            for (int i = 0; i < startLinks.Count; i++) {
+                List<SpiderPage> next_links = new List<SpiderPage>();
+                for (int k = i; k < i + 5; k++) {
+                    if (k == startLinks.Count) {
+                        k += 5;
+                        continue;
+                    }
+                    next_links.Add(startLinks.ElementAt(k));
+                }
 
-            this.results_available = true;
+                ThreadStart next_helper_thread = delegate() {
+                    this.spiderHelper(next_links);
+                };
+                new Thread(next_helper_thread).Start();
+
+                i += 5;
+            }
         }
 
         /* spiderHelper -   Actual recursive method for spidering a site, not to be called explicitly
@@ -119,33 +133,40 @@ namespace Spider {
 
                 this.writeStatus("spiderHelper() - links found in this iteration: " + pages.Count);
                 for (int i = 0; i < pages.Count; i++) {
+                    
                     bool found = false;
+                    int new_page_found_index = 0;
                     SpiderPage curr_page = pages.ElementAt(i);
-                    for (int j = 0; j < this.masterResults.Count; j++) {
-                        // check to see if curr_page is already in the master results
-                        if (curr_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
-                            found = true;
-                            // if curr_page has already been visited, just add all the referring URLs from this curr_page
-                            // object to the master results
-                            List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
-                            for (int g = 0; g < curr_page_ref_urls.Count; g++) {
-                                if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
-                                    this.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
+
+                    lock (this.masterResults) {
+                        for (int j = 0; j < this.masterResults.Count; j++) {
+                            // check to see if curr_page is already in the master results
+                            if (curr_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
+                                found = true;
+                                // if curr_page has already been visited, just add all the referring URLs from this curr_page
+                                // object to the master results
+                                List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
+                                for (int g = 0; g < curr_page_ref_urls.Count; g++) {
+                                    if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
+                                        this.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
+                                    }
                                 }
                             }
+                        }
+                        if (!found) {
+                            this.masterResults.Add(curr_page);
+                            new_page_found_index = masterResults.Count - 1;
                         }
                     }
 
                     // if this is a new page...
                     if (!found) {
-                        List<SpiderPage> temp_n_pages = getLinks(curr_page, this);
+                        List<SpiderPage> temp_n_pages = getLinks(this.masterResults.ElementAt(new_page_found_index), this);
                         for (int k = 0; k < temp_n_pages.Count; k++) {
-                            // add a all the links on this page to its linking pages list
-                            curr_page.addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
+                            // add all the links on this page to its linking pages list
+                            this.masterResults.ElementAt(new_page_found_index).addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
                         }
 
-                        // add this page to the master results
-                        this.masterResults.Add(curr_page);
                         // add all the links on this page to the list of links to be spidered in the next pass
                         n_pages.AddRange(temp_n_pages);
                     }
