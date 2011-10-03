@@ -103,8 +103,7 @@ namespace Spider {
                 List<SpiderPage> next_links = new List<SpiderPage>();
                 for (int k = i; k < i + 5; k++) {
                     if (k == startLinks.Count) {
-                        k += 5;
-                        continue;
+                     	break;
                     }
                     next_links.Add(startLinks.ElementAt(k));
                 }
