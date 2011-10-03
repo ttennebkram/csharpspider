@@ -18,7 +18,7 @@ namespace SpiderConsoleApp {
             
             s.spider();
 
-            Thread.Sleep(600000);
+            Thread.Sleep(220000);
             List<SpiderPage> results = s.getResults();
 
             for (int i = 0; i < results.Count; i++) {
