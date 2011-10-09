@@ -141,11 +141,11 @@ namespace Spider {
 			// thread id's status back to not working when it's done
             int thread_index = 0;
             bool thread_found = false;
-            for (int i = 0; i < spider_obj._thread_status.Count; i++) {    
+            for (int i = 0; i < spider_obj._thread_status.Count; i++) {
                 if (spider_obj._thread_status.ElementAt(i)[0] == Thread.CurrentThread.ManagedThreadId) {
-		            thread_found = true;
+	                spider_obj._thread_status.ElementAt(i)[1] = 1;
 		            thread_index = i;
-                    spider_obj._thread_status.ElementAt(thread_index)[1] = 1;
+		            thread_found = true;
 					break;
                 }
             }
@@ -155,7 +155,7 @@ namespace Spider {
 				// a local lock object
                 Object lock_obj = new Object();
                 lock (lock_obj) {
-                    spider_obj._thread_status.Add(new int[] { Thread.CurrentThread.ManagedThreadId, 1 });
+                    spider_obj._thread_status.Add(new int[]{ Thread.CurrentThread.ManagedThreadId, 1 });
                     thread_index = spider_obj._thread_status.Count - 1;
                 }
             }
