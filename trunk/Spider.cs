@@ -20,7 +20,7 @@ namespace Spider {
         int thread_count;
         List<SpiderPage> masterResults;
 
-        bool results_available;
+        List<int[]> _thread_status;
 
         List<SpiderStatus> status;
 
@@ -38,7 +38,8 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
-            this.results_available = false;
+            
+            this._thread_status = new List<int[]>();
         }
 
         /* Spider() -       creates a new spider object which outputs its status to something other
@@ -53,7 +54,8 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
-            this.results_available = false;
+
+            this._thread_status = new List<int[]>();
 
             this.status = status;
         }
@@ -83,18 +85,18 @@ namespace Spider {
         /* getResults() -   return the results of spider(), or null if they're not ready.
          */
         public List<SpiderPage> getResults() {
-            if (results_available) {
-                return this.masterResults;
+            Thread.Sleep(5000);
+            for (int i = 0; i < this._thread_status.Count; i++) {
+                if (this._thread_status.ElementAt(i)[1] != 0) {
+                    return null;
+                }
             }
-            else {
-                return null;
-            }
+            return this.masterResults;
         }
 
         /* spider() -       Actually begin spidering- set things up and do the actual work by calling spiderHelper()
          */
         public void spider() {
-            this.results_available = false;
 
             this.writeStatus("baseUrl = " + this.baseUrl);
             this.writeStatus("startUrl = " + this.startUrl);
@@ -117,8 +119,6 @@ namespace Spider {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderHelperWrapper(this, next_links));
                 i += 5;
             }
-
-            this.results_available = true;
         }
 
         /* spiderHelper -   Actual recursive method for spidering a site, not to be called explicitly
@@ -131,11 +131,28 @@ namespace Spider {
             Spider spider_obj = wrapper.getSpiderObject();
             List<SpiderPage> pages = wrapper.getNewPages();
 
+            int thread_index = 0;
+            bool thread_found = false;
+            for (int i = 0; i < spider_obj._thread_status.Count; i++) {
+                if (spider_obj._thread_status.ElementAt(i)[0] == Thread.CurrentThread.ManagedThreadId) {
+                    spider_obj._thread_status.ElementAt(i)[1] = 1;
+                    thread_index = i;
+                    thread_found = true;
+                }
+            }
+            if (!thread_found) {
+                Object lock_obj = new Object();
+                lock (lock_obj) {
+                    spider_obj._thread_status.Add(new int[] { Thread.CurrentThread.ManagedThreadId, 1 });
+                    thread_index = spider_obj._thread_status.Count - 1;
+                }
+            }
+
             if (pages.Count > 0) {
                 //all the new links we find to call spiderHelper() with next time
                 List<SpiderPage> n_pages = new List<SpiderPage>();
 
-                spider_obj.writeStatus("spiderHelper() - links found in this iteration: " + pages.Count);
+                spider_obj.writeStatus("thread id: " + Thread.CurrentThread.ManagedThreadId + ", spiderHelper() - links found in this iteration: " + pages.Count);
 
                 for (int i = 0; i < pages.Count; i++) {
                     bool found = false;
@@ -182,6 +199,8 @@ namespace Spider {
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderHelperWrapper(spider_obj, n_pages));
             }
+
+            spider_obj._thread_status.ElementAt(thread_index)[1] = 0;
         }
 
         /* getLinks() 	-	find all the links on a given page

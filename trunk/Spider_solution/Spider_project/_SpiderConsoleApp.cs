@@ -18,8 +18,10 @@ namespace SpiderConsoleApp {
             
             s.spider();
 
-            Thread.Sleep(120000);
-            List<SpiderPage> results = s.getResults();
+            List<SpiderPage> results = null;
+            do {
+                results = s.getResults();
+            } while (results == null);
 
             for (int i = 0; i < results.Count; i++) {
                 SpiderPage curr = results.ElementAt(i);
