@@ -123,7 +123,6 @@ namespace Spider {
 			this._thread_status.Add(new int[]{ (thread_count + 1), 0 });
 			
 			this.spiderProcess();
-			}
         }
 
 		void spiderProcess() {
