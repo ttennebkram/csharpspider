@@ -114,8 +114,13 @@ namespace Spider {
             this.writeStatus("spider() - starting crawl...");
 
             List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
+            
+            List<string> startLinks_strings = new List<string>();
+            for (int i = 0; i < startLinks.Count; i++) {
+                startLinks_strings.Add(startLinks.ElementAt(i).getUrl());
+            }
 
-			this._candidate_pages.Add(new SpiderPage(this.startUrl, new List<SpiderPage>, startLinks));
+			this._candidate_pages.Add(new SpiderPage(this.startUrl, new List<string>(), startLinks_strings));
 			for (int i = 0; i < startLinks.Count; i++) {
 				this._candidate_pages.Add(startLinks.ElementAt(i));
             }
@@ -146,7 +151,7 @@ namespace Spider {
                                 }
 							}
                             // add all the referring URLs from the curr_page object to masterResults
-                            List<string> current_page_ref_urls = curr_page.getReferencedByUrls();
+                            List<string> current_page_ref_urls = current_page.getReferencedByUrls();
                             for (int g = 0; g < current_page_ref_urls.Count; g++) {
                                 if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(current_page_ref_urls.ElementAt(g))) {
                                     this.masterResults.ElementAt(j).addReferencedByUrl(current_page_ref_urls.ElementAt(g));
@@ -157,13 +162,13 @@ namespace Spider {
                     }
 					// if this is a new page...
                     if (!found) {
-	                    this.masterResults.Add(curr_page);
-						ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, curr_page));
+	                    this.masterResults.Add(current_page);
+						ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, current_page));
                     }
 				}
 			}
 			
-			Thread.sleep(5000);
+			Thread.Sleep(5000);
 			if (this._candidate_pages.Count == 0) {
 				_thread_status.ElementAt(0)[1] = 0;
 			}
@@ -310,7 +315,7 @@ namespace Spider {
 			return this.spider_obj;
 		}
 
-		public List<SpiderPage> getNewPage() {
+		public SpiderPage getNewPage() {
 			return this.new_page;
 		}
 	}
