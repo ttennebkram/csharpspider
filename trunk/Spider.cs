@@ -298,7 +298,7 @@ namespace Spider {
 		}
 
 		public Spider getSpiderObject() {
-				return this.spider_obj;
+			return this.spider_obj;
 		}
 
 		public List<SpiderPage> getNewPages() {
