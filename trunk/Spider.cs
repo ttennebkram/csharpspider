@@ -18,11 +18,12 @@ namespace Spider {
         string startUrl;
         int niceness;
         int thread_count;
+
         List<SpiderPage> masterResults;
 
-        List<int[]> _thread_status;
-
         List<SpiderStatus> status;
+
+        List<int[]> _thread_status;
 
         /* 	Spider() -		creates a new Spider object, which encapsulates the process of 
          *                  spidering a site.
@@ -38,7 +39,6 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
-            
             this._thread_status = new List<int[]>();
         }
 
@@ -54,7 +54,6 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
-
             this._thread_status = new List<int[]>();
 
             this.status = status;
@@ -85,6 +84,8 @@ namespace Spider {
         /* getResults() -   return the results of spider(), or null if they're not ready.
          */
         public List<SpiderPage> getResults() {
+			// sleep here to make sure getResults() can't be called too early after spider(), and also
+			// just so that a while-loop calling getResults() doesn't check so often
             Thread.Sleep(5000);
             for (int i = 0; i < this._thread_status.Count; i++) {
                 if (this._thread_status.ElementAt(i)[1] != 0) {
@@ -106,6 +107,7 @@ namespace Spider {
             ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
             List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
 
+			// breaking up the links on the start page into 5-links-per-thread sets right now, for testing purposes
             int i = 0;
             while (i < startLinks.Count) {
                 List<SpiderPage> next_links = new List<SpiderPage>();
@@ -123,24 +125,34 @@ namespace Spider {
 
         /* spiderHelper -   Actual recursive method for spidering a site, not to be called explicitly
          *                  other than from within spider().
-         *  @pages -        A list of SpiderPage objects representing the pages to scan on this pass.
+         *  @args -        	A SpiderWrapperHelper object that will be cast back from a normal object.  We
+		 *					have to take normal objects as input because QueueUserWorkItem requires a single 
+		 *					generic object to give its worker delegate (spideHelper) as an argument.
          */
         static void spiderHelper(Object args) {
 
-            SpiderHelperWrapper wrapper = (SpiderHelperWrapper)args;
+            SpiderHelperWrapper wrapper = (SpiderHelperWrapper) args;
+
             Spider spider_obj = wrapper.getSpiderObject();
             List<SpiderPage> pages = wrapper.getNewPages();
 
+			// check this thread into _thread_status, a list of int[]s, where [0] is the thread ID and [1] is
+			// the status- 0 for not working and 1 for working.  thread_index is used later to change this
+			// thread id's status back to not working when it's done
             int thread_index = 0;
             bool thread_found = false;
-            for (int i = 0; i < spider_obj._thread_status.Count; i++) {
+            for (int i = 0; i < spider_obj._thread_status.Count; i++) {    
                 if (spider_obj._thread_status.ElementAt(i)[0] == Thread.CurrentThread.ManagedThreadId) {
-                    spider_obj._thread_status.ElementAt(i)[1] = 1;
-                    thread_index = i;
-                    thread_found = true;
+		            thread_found = true;
+		            thread_index = i;
+                    spider_obj._thread_status.ElementAt(thread_index)[1] = 1;
+					break;
                 }
             }
+			// need to make a new entry for this thread id in _thread_status...
             if (!thread_found) {
+				// lock the thread when performing an operation that depends on _thread_status.Count, using
+				// a local lock object
                 Object lock_obj = new Object();
                 lock (lock_obj) {
                     spider_obj._thread_status.Add(new int[] { Thread.CurrentThread.ManagedThreadId, 1 });
@@ -159,14 +171,15 @@ namespace Spider {
                     int new_page_found_index = 0;
                     SpiderPage curr_page = pages.ElementAt(i);
 
+					// lock on a local object; masterResults-sensitive code!
                     Object lock_obj = new Object();
                     lock (lock_obj) {
                         for (int j = 0; j < spider_obj.masterResults.Count; j++) {
-                            // check to see if curr_page is already in the master results
+                            // check to see if curr_page is already in masterResults
                             if (curr_page.getUrl() == spider_obj.masterResults.ElementAt(j).getUrl()) {
                                 found = true;
                                 // if curr_page has already been visited, just add all the referring URLs from this curr_page
-                                // object to the master results
+                                // object to masterResults
                                 List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
                                 for (int g = 0; g < curr_page_ref_urls.Count; g++) {
                                     if (!spider_obj.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
@@ -176,14 +189,12 @@ namespace Spider {
                                 break;
                             }
                         }
-
                         // if this is a new page...
                         if (!found) {
                             spider_obj.masterResults.Add(curr_page);
                             new_page_found_index = spider_obj.masterResults.Count - 1;
                         }
                     }
-
                     // if this is a new page (outside thread lock now)...
                     if (!found) {
                         List<SpiderPage> temp_n_pages = getLinks(spider_obj.masterResults.ElementAt(new_page_found_index), spider_obj);
@@ -191,22 +202,22 @@ namespace Spider {
                             // add all the links on this page to its linking pages list
                             spider_obj.masterResults.ElementAt(new_page_found_index).addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
                         }
-
                         // add all the links on this page to the list of links to be spidered in the next pass
                         n_pages.AddRange(temp_n_pages);
                     }
                 }
-
+				// put a new work item into the ThreadPool queue; multi-threaded recursion here since this new work item 
+				// will call spiderHelper() with all the new links found in this iteration
                 ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderHelperWrapper(spider_obj, n_pages));
             }
-
+			// set this thread id's status back to not working in _thread_status
             spider_obj._thread_status.ElementAt(thread_index)[1] = 0;
         }
 
         /* getLinks() 	-	find all the links on a given page
          *  @startp 	-	the page to be scanned for links, represented as an SpiderPage object (which has a referring 
          *             		page)
-         *  @baseurl	- 	the base URL
+         *  @s			- 	the Spider object in use
          */
         public static List<SpiderPage> getLinks(SpiderPage startp, Spider s) {
             List<string> pre_pages = new List<string>();
