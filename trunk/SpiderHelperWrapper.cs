@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-
-namespace spider {
+namespace Spider {
 	
-	class SpiderHelperWrapper {
+	public class SpiderHelperWrapper {
 		
 		Spider spider_obj;
 		List<SpiderPage> new_pages;
@@ -17,11 +16,11 @@ namespace spider {
 			this.new_pages = new_pages;
 		}
 		
-		Spider getSpiderObj() {
+		public Spider getSpiderObject() {
 			return this.spider_obj;
 		}
 		
-		List<SpiderPage> getNewPages() {
+		public List<SpiderPage> getNewPages() {
 			return this.new_pages;
 		}
 	}

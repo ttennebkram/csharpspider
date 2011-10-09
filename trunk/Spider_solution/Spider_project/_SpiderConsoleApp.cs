@@ -14,7 +14,7 @@ namespace SpiderConsoleApp {
         static void Main(string[] args) {
             string startUrl = "http://www.ideaeng.com";
             string baseUrl = "http://www.ideaeng.com";
-            Spider.Spider s = new Spider.Spider(startUrl, baseUrl, 500);
+            Spider.Spider s = new Spider.Spider(startUrl, baseUrl, 500, 10);
             
             s.spider();
 
