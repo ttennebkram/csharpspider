@@ -38,7 +38,6 @@ namespace Spider {
 			this.thread_count = thread_count;
 			
 			this.masterResults = new List<SpiderPage>();
-
             this.results_available = false;
         }
 
@@ -48,7 +47,13 @@ namespace Spider {
          *                  so that the GUI app can legally access the UI thread with status update messages
          */
         public Spider(string baseUrl, string startUrl, int niceness, int thread_count, List<SpiderStatus> status) {
-          	: this(baseUrl, startUrl, niceness, thread_count);
+            this.baseUrl = baseUrl;
+            this.startUrl = startUrl;
+            this.niceness = niceness;
+			this.thread_count = thread_count;
+
+            this.masterResults = new List<SpiderPage>();
+            this.results_available = false;
 
             this.status = status;
         }
@@ -96,7 +101,7 @@ namespace Spider {
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
 
-            ThreadPool.SetMaxThreads(this.n_theads);
+            ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
 			List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this.getBaseUrl());
 			
 			int i = 0;
@@ -250,7 +255,7 @@ namespace Spider {
         }
     }
 
-	private class SpiderHelperWrapper {
+    class SpiderHelperWrapper {
 		
 		Spider spider_obj;
 		List<SpiderPage> new_pages;
