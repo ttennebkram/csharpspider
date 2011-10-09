@@ -118,7 +118,7 @@ namespace Spider {
                     next_links.Add(startLinks.ElementAt(k));
                 }
 
-                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderHelperWrapper(this, next_links));
+                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderDataWrapper(this, next_links));
                 i += 5;
             }
         }
@@ -131,7 +131,7 @@ namespace Spider {
          */
         static void spiderHelper(Object args) {
 
-            SpiderHelperWrapper wrapper = (SpiderHelperWrapper) args;
+            SpiderDataWrapper wrapper = (SpiderDataWrapper) args;
 
             Spider spider_obj = wrapper.getSpiderObject();
             List<SpiderPage> pages = wrapper.getNewPages();
@@ -208,7 +208,7 @@ namespace Spider {
                 }
 				// put a new work item into the ThreadPool queue; multi-threaded recursion here since this new work item 
 				// will call spiderHelper() with all the new links found in this iteration
-                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderHelperWrapper(spider_obj, n_pages));
+                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderDataWrapper(spider_obj, n_pages));
             }
 			// set this thread id's status back to not working in _thread_status
             spider_obj._thread_status.ElementAt(thread_index)[1] = 0;
@@ -287,12 +287,12 @@ namespace Spider {
         }
     }
 
-	public class SpiderHelperWrapper {
+	public class SpiderDataWrapper {
 
 		Spider spider_obj;
 		List<SpiderPage> new_pages;
 
-		public SpiderHelperWrapper(Spider spider_obj, List<SpiderPage> new_pages) {
+		public SpiderDataWrapper(Spider spider_obj, List<SpiderPage> new_pages) {
 			this.spider_obj = spider_obj;
 			this.new_pages = new_pages;
 		}

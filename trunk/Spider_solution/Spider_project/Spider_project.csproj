@@ -49,9 +49,6 @@
     <Compile Include="..\..\Spider.cs">
       <Link>Spider.cs</Link>
     </Compile>
-    <Compile Include="..\..\SpiderHelperWrapper.cs">
-      <Link>SpiderHelperWrapper.cs</Link>
-    </Compile>
     <Compile Include="..\..\SpiderPage.cs">
       <Link>SpiderPage.cs</Link>
     </Compile>
