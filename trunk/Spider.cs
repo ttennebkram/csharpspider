@@ -17,6 +17,7 @@ namespace Spider {
         string baseUrl;
         string startUrl;
         int niceness;
+		int thread_count;
         List<SpiderPage> masterResults;
 
         bool results_available;
@@ -28,12 +29,15 @@ namespace Spider {
          *  @baseUrl -      the minimum url, e.g. http://www.google.com for google
          *  @startUrl -     the first page on the site to spider, e.g. /index.html or http://www.site.com/index.html
          *  @niceness -     time in ms to wait between http requests
+		 *	@thread_count -	the maximum number of threads we can have running simultaneously while spidering
          */
-        public Spider(string baseUrl, string startUrl, int niceness) {
+        public Spider(string baseUrl, string startUrl, int niceness, int thread_count) {
             this.baseUrl = baseUrl;
             this.startUrl = startUrl;
             this.niceness = niceness;
-            this.masterResults = new List<SpiderPage>();
+			this.thread_count = thread_count;
+			
+			this.masterResults = new List<SpiderPage>();
 
             this.results_available = false;
         }
@@ -43,13 +47,8 @@ namespace Spider {
          *  @status -       a list to write status message objects to; SpiderStatus implements INotifyPropertyChanged
          *                  so that the GUI app can legally access the UI thread with status update messages
          */
-        public Spider(string baseUrl, string startUrl, int niceness, List<SpiderStatus> status) {
-            this.baseUrl = baseUrl;
-            this.startUrl = startUrl;
-            this.niceness = niceness;
-            this.masterResults = new List<SpiderPage>();
-
-            this.results_available = false;
+        public Spider(string baseUrl, string startUrl, int niceness, int thread_count, List<SpiderStatus> status) {
+          	: this(baseUrl, startUrl, niceness, thread_count);
 
             this.status = status;
         }
@@ -97,7 +96,9 @@ namespace Spider {
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
 
-            List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
+            ThreadPool.SetMaxThreads(this.n_theads);
+			List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this.getBaseUrl());
+			
 			int i = 0;
             while (i < startLinks.Count) {
                 List<SpiderPage> next_links = new List<SpiderPage>();
@@ -108,11 +109,7 @@ namespace Spider {
                     next_links.Add(startLinks.ElementAt(k));
                 }
 
-                ThreadStart next_helper_thread = delegate() {
-                    this.spiderHelper(next_links);
-                };
-                new Thread(next_helper_thread).Start();
-
+				ThreadPool.QueueUserWorkItem(new WaitCallBack(spiderHelper), new SpiderHelperWrapper(this, next_links));
                 i += 5;
             }
 
@@ -123,68 +120,69 @@ namespace Spider {
          *                  other than from within spider().
          *  @pages -        A list of SpiderPage objects representing the pages to scan on this pass.
          */
-        void spiderHelper(List<SpiderPage> pages) {
+        static void spiderHelper(Object args) {
 
-            // basecase - we'll eventually call spiderHelper() with an emptly list because
-            // all the pages from the last pass had been found already
-            if (pages.Count > 0) {
-                //all the new links we find to call spiderHelper() with next time
-                List<SpiderPage> n_pages = new List<SpiderPage>();
+			SpiderHelperWrapper wrapper = (SpiderHelperWrapper) args;
+			Spider spider_obj = wrapper.getSpiderObject();
+			List<SpiderPages> pages = wrapper.getNewPages();
 
-                this.writeStatus("spiderHelper() - links found in this iteration: " + pages.Count);
-                for (int i = 0; i < pages.Count; i++) {
-                    
-                    bool found = false;
-                    int new_page_found_index = 0;
-                    SpiderPage curr_page = pages.ElementAt(i);
+		  	//all the new links we find to call spiderHelper() with next time
+		   	List<SpiderPage> n_pages = new List<SpiderPage>();
 
-                    lock (this.masterResults) {
-                        for (int j = 0; j < this.masterResults.Count; j++) {
-                            // check to see if curr_page is already in the master results
-                            if (curr_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
-                                found = true;
-                                // if curr_page has already been visited, just add all the referring URLs from this curr_page
-                                // object to the master results
-                                List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
-                                for (int g = 0; g < curr_page_ref_urls.Count; g++) {
-                                    if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
-                                        this.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
-                                    }
-                                }
-								break;
-                            }
-                        }
+		  	this.writeStatus("spiderHelper() - links found in this iteration: " + pages.Count);
+		
+		   	for (int i = 0; i < pages.Count; i++) {
+		    	bool found = false;
+		    	int new_page_found_index = 0;
+		    	SpiderPage curr_page = pages.ElementAt(i);
+		
+				private Object lock_obj = new Object();
+		    	lock (lock_obj) {
+		        	for (int j = 0; j < spider_obj.masterResults.Count; j++) {
+		            	// check to see if curr_page is already in the master results
+		            	if (curr_page.getUrl() == spider_obj.masterResults.ElementAt(j).getUrl()) {
+		                	found = true;
+		                	// if curr_page has already been visited, just add all the referring URLs from this curr_page
+		                	// object to the master results
+		                	List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
+		                	for (int g = 0; g < curr_page_ref_urls.Count; g++) {
+		                    	if (!spider_obj.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
+		                        	spider_obj.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
+		                    	}
+		                	}
+							break;
+		            	}
+		        	}
 
-						// if this is a new page...
-                        if (!found) {
-                            this.masterResults.Add(curr_page);
-                            new_page_found_index = masterResults.Count - 1;
-                        }
-                    }
+					// if this is a new page...
+		        	if (!found) {
+		            	spider_obj.masterResults.Add(curr_page);
+		            	new_page_found_index = spider_obj.masterResults.Count - 1;
+		        	}
+		    	}
 
-                    // if this is a new page (outside thread lock now)...
-                    if (!found) {
-                        List<SpiderPage> temp_n_pages = getLinks(this.masterResults.ElementAt(new_page_found_index), this);
-                        for (int k = 0; k < temp_n_pages.Count; k++) {
-                            // add all the links on this page to its linking pages list
-                            this.masterResults.ElementAt(new_page_found_index).addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
-                        }
+		    	// if this is a new page (outside thread lock now)...
+		    	if (!found) {
+		        	List<SpiderPage> temp_n_pages = getLinks(spider_obj.masterResults.ElementAt(new_page_found_index), spider_obj.getBaseUrl());
+		        	for (int k = 0; k < temp_n_pages.Count; k++) {
+		            	// add all the links on this page to its linking pages list
+		            	spider_obj.masterResults.ElementAt(new_page_found_index).addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
+		        	}
 
-                        // add all the links on this page to the list of links to be spidered in the next pass
-                        n_pages.AddRange(temp_n_pages);
-                    }
-                }
-
-                this.spiderHelper(n_pages);
-            }
-        }
-
+		        	// add all the links on this page to the list of links to be spidered in the next pass
+		        	n_pages.AddRange(temp_n_pages);
+		    	}
+			}
+			
+			ThreadPool.QueueUserWorkItem(new WaitCallBack(spiderHelper), new SpiderHelperWrapper(spider_obj, n_pages));
+		}
+		
         /* getLinks() 	-	find all the links on a given page
          *  @startp 	-	the page to be scanned for links, represented as an SpiderPage object (which has a referring 
          *             		page)
-         *  @s		 	- 	the spider object in use
+         *  @baseurl	- 	the base URL
          */
-        public static List<SpiderPage> getLinks(SpiderPage startp, Spider s) {
+        public static List<SpiderPage> getLinks(SpiderPage startp, string base_url) {
             List<string> pre_pages = new List<string>();
             List<SpiderPage> new_pages = new List<SpiderPage>();
 
@@ -234,10 +232,10 @@ namespace Spider {
                 foreach (var link in linksOnPage) {
                     if (link.Url.StartsWith("/")) {
                         if (link.Url.EndsWith("/")) {
-                            pre_pages.Add(s.getBaseUrl() + link.Url);
+                            pre_pages.Add(base_url + link.Url);
                         }
                         else {
-                            pre_pages.Add(s.getBaseUrl() + link.Url + "/");
+                            pre_pages.Add(base_url + link.Url + "/");
                         }
                     }
                 };
@@ -251,4 +249,23 @@ namespace Spider {
             return new_pages;
         }
     }
+
+	private class SpiderHelperWrapper {
+		
+		Spider spider_obj;
+		List<SpiderPage> new_pages;
+		
+		public SpiderHelperWrapper(Spider spider_obj, List<SpiderPage> new_pages) {
+			this.spider_obj = spider_obj;
+			this.new_pages = new_pages;
+		}
+		
+		Spider getSpiderObj() {
+			return this.spider_obj;
+		}
+		
+		List<SpiderPage> getNewPages() {
+			return this.new_pages;
+		}
+	}
 }
