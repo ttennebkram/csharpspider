@@ -113,43 +113,33 @@ namespace Spider {
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
 
-            List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
-            
-            List<string> startLinks_strings = new List<string>();
-            for (int i = 0; i < startLinks.Count; i++) {
-                startLinks_strings.Add(startLinks.ElementAt(i).getUrl());
-            }
+            this._candidate_pages.Add(new SpiderPage(this.startUrl, this.startUrl));
 
-			this._candidate_pages.Add(new SpiderPage(this.startUrl, new List<string>(), startLinks_strings));
-			for (int i = 0; i < startLinks.Count; i++) {
-				this._candidate_pages.Add(startLinks.ElementAt(i));
-            }
-
-			this._thread_status.Add(new int[]{ (thread_count + 1), 0 });
-			
+			this._thread_status.Add(new int[]{ (thread_count * thread_count), 0 });
 			this.spiderProcess();
         }
 
 		void spiderProcess() {
 		
 			_thread_status.ElementAt(0)[1] = 1;
-			
-			lock (this) {
-				for (int i = 0; i < this._candidate_pages.Count; i++) {
-					bool found = false;
-					SpiderPage current_page = this._candidate_pages.ElementAt(i);
-					
-					for (int j = 0; j < this.masterResults.Count; j++) {
+
+            lock (this) {
+                int candidate_pages_count = this._candidate_pages.Count;
+                for (int i = 0; i < candidate_pages_count; i++) {
+                    bool found = false;
+                    SpiderPage current_page = this._candidate_pages.ElementAt(i);
+
+                    for (int j = 0; j < this.masterResults.Count; j++) {
                         // check to see if current_page is already in masterResults
                         if (current_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
                             found = true;
-							// add all the linking URLs from the curr_page object to masterResults
-							List<string> current_page_link_urls = current_page.getLinkingToUrls();
-							for (int q = 0; q < current_page_link_urls.Count; q++) {
-								if (!this.masterResults.ElementAt(j).getLinkingToUrls().Contains(current_page_link_urls.ElementAt(q))) {
+                            // add all the linking URLs from the curr_page object to masterResults
+                            List<string> current_page_link_urls = current_page.getLinkingToUrls();
+                            for (int q = 0; q < current_page_link_urls.Count; q++) {
+                                if (!this.masterResults.ElementAt(j).getLinkingToUrls().Contains(current_page_link_urls.ElementAt(q))) {
                                     this.masterResults.ElementAt(j).addLinkingToUrl(current_page_link_urls.ElementAt(q));
                                 }
-							}
+                            }
                             // add all the referring URLs from the curr_page object to masterResults
                             List<string> current_page_ref_urls = current_page.getReferencedByUrls();
                             for (int g = 0; g < current_page_ref_urls.Count; g++) {
@@ -160,21 +150,21 @@ namespace Spider {
                             break;
                         }
                     }
-					// if this is a new page...
+                    // if this is a new page...
                     if (!found) {
-	                    this.masterResults.Add(current_page);
-						ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, current_page));
+                        this.masterResults.Add(current_page);
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, current_page));
                     }
-				}
-			}
-			
-			Thread.Sleep(5000);
-			if (this._candidate_pages.Count == 0) {
-				_thread_status.ElementAt(0)[1] = 0;
-			}
-			else {
-				this.spiderProcess();
-			}
+                }
+                // remove all the candidate pages we've just processed
+                _candidate_pages.RemoveRange(0, candidate_pages_count);
+            }
+
+            Thread.Sleep(30000);
+            if (this._candidate_pages.Count > 0) {
+                this.spiderProcess();
+            }
+            this._thread_status.ElementAt(0)[1] = 0;
 		}
 
         /* spiderFetch -   	ThreadPool QueueUserWorkItem method, gets the links on a page and adds them to the 
@@ -214,6 +204,7 @@ namespace Spider {
                 }
             }
 
+            spider_obj.writeStatus("thread id: " + Thread.CurrentThread.ManagedThreadId + ", spiderFetch(): fetching " + current_page.getUrl());
 			List<SpiderPage> current_page_links = getLinks(current_page, spider_obj);
 			
 			List<string> current_page_link_strings = new List<string>();
