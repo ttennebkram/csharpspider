@@ -24,6 +24,7 @@ namespace Spider {
         List<SpiderStatus> status;
 
         List<int[]> _thread_status;
+		List<SpiderPage> _candidate_pages;
 
         /* 	Spider() -		creates a new Spider object, which encapsulates the process of 
          *                  spidering a site.
@@ -39,7 +40,11 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
+
             this._thread_status = new List<int[]>();
+			this._candidate_pages = new List<SpiderPage>();
+			
+			ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
         }
 
         /* Spider() -       creates a new spider object which outputs its status to something other
@@ -54,7 +59,11 @@ namespace Spider {
             this.thread_count = thread_count;
 
             this.masterResults = new List<SpiderPage>();
+
             this._thread_status = new List<int[]>();
+			this._candidate_pages = new List<SpiderPage>();
+			
+			ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
 
             this.status = status;
         }
@@ -95,7 +104,7 @@ namespace Spider {
             return this.masterResults;
         }
 
-        /* spider() -       Actually begin spidering- set things up and do the actual work by calling spiderHelper()
+        /* spider() -       Actually begin spidering- set things up and do the actual work by calling spiderProcess()
          */
         public void spider() {
 
@@ -104,37 +113,78 @@ namespace Spider {
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
 
-            ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
             List<SpiderPage> startLinks = getLinks(new SpiderPage(this.startUrl, this.startUrl), this);
 
-			// breaking up the links on the start page into 5-links-per-thread sets right now, for testing purposes
-            int i = 0;
-            while (i < startLinks.Count) {
-                List<SpiderPage> next_links = new List<SpiderPage>();
-                for (int k = i; k < i + 5; k++) {
-                    if (k == startLinks.Count) {
-                        break;
-                    }
-                    next_links.Add(startLinks.ElementAt(k));
-                }
-
-                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderDataWrapper(this, next_links));
-                i += 5;
+			this._candidate_pages.Add(new SpiderPage(this.startUrl, new List<SpiderPage>, startLinks));
+			for (int i = 0; i < startLinks.Count; i++) {
+				this._candidate_pages.Add(startLinks.ElementAt(i));
             }
+
+			this._thread_status.Add(new int[]{ (thread_count + 1), 0 });
+			
+			this.spiderProcess();
+			}
         }
 
-        /* spiderHelper -   Actual recursive method for spidering a site, not to be called explicitly
-         *                  other than from within spider().
+		void spiderProcess() {
+		
+			_thread_status.ElementAt(0)[1] = 1;
+			
+			lock (this) {
+				for (int i = 0; i < this._candidate_pages.Count; i++) {
+					bool found = false;
+					SpiderPage current_page = this._candidate_pages.ElementAt(i);
+					
+					for (int j = 0; j < this.masterResults.Count; j++) {
+                        // check to see if current_page is already in masterResults
+                        if (current_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
+                            found = true;
+							// add all the linking URLs from the curr_page object to masterResults
+							List<string> current_page_link_urls = current_page.getLinkingToUrls();
+							for (int q = 0; q < current_page_link_urls.Count; q++) {
+								if (!this.masterResults.ElementAt(j).getLinkingToUrls().Contains(current_page_link_urls.ElementAt(q))) {
+                                    this.masterResults.ElementAt(j).addLinkingToUrl(current_page_link_urls.ElementAt(q));
+                                }
+							}
+                            // add all the referring URLs from the curr_page object to masterResults
+                            List<string> current_page_ref_urls = curr_page.getReferencedByUrls();
+                            for (int g = 0; g < current_page_ref_urls.Count; g++) {
+                                if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(current_page_ref_urls.ElementAt(g))) {
+                                    this.masterResults.ElementAt(j).addReferencedByUrl(current_page_ref_urls.ElementAt(g));
+                                }
+                            }
+                            break;
+                        }
+                    }
+					// if this is a new page...
+                    if (!found) {
+	                    this.masterResults.Add(curr_page);
+						ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, curr_page));
+                    }
+				}
+			}
+			
+			Thread.sleep(5000);
+			if (this._candidate_pages.Count == 0) {
+				_thread_status.ElementAt(0)[1] = 0;
+			}
+			else {
+				this.spiderProcess();
+			}
+		}
+
+        /* spiderFetch -   	ThreadPool QueueUserWorkItem method, gets the links on a page and adds them to the 
+		 *					candidates list.
          *  @args -        	A SpiderWrapperHelper object that will be cast back from a normal object.  We
 		 *					have to take normal objects as input because QueueUserWorkItem requires a single 
 		 *					generic object to give its worker delegate (spideHelper) as an argument.
          */
-        static void spiderHelper(Object args) {
+        static void spiderFetch(Object args) {
 
             SpiderDataWrapper wrapper = (SpiderDataWrapper) args;
 
             Spider spider_obj = wrapper.getSpiderObject();
-            List<SpiderPage> pages = wrapper.getNewPages();
+            SpiderPage current_page = wrapper.getNewPage();
 
 			// check this thread into _thread_status, a list of int[]s, where [0] is the thread ID and [1] is
 			// the status- 0 for not working and 1 for working.  thread_index is used later to change this
@@ -160,56 +210,16 @@ namespace Spider {
                 }
             }
 
-            if (pages.Count > 0) {
-                //all the new links we find to call spiderHelper() with next time
-                List<SpiderPage> n_pages = new List<SpiderPage>();
+			List<SpiderPage> current_page_links = getLinks(current_page, spider_obj);
+			
+			List<string> current_page_link_strings = new List<string>();
+			for (int q = 0; q < current_page_links.Count; q++) {
+				string qth_page_url = current_page_links.ElementAt(q).getUrl();
+				spider_obj._candidate_pages.Add(new SpiderPage(qth_page_url, current_page.getUrl()));
+				current_page_link_strings.Add(qth_page_url);
+			}
+			spider_obj._candidate_pages.Add(new SpiderPage(current_page.getUrl(), current_page.getReferencedByUrls(), current_page_link_strings));
 
-                spider_obj.writeStatus("thread id: " + Thread.CurrentThread.ManagedThreadId + ", spiderHelper() - links found in this iteration: " + pages.Count);
-
-                for (int i = 0; i < pages.Count; i++) {
-                    bool found = false;
-                    int new_page_found_index = 0;
-                    SpiderPage curr_page = pages.ElementAt(i);
-
-					// lock on a local object; masterResults-sensitive code!
-                    Object lock_obj = new Object();
-                    lock (lock_obj) {
-                        for (int j = 0; j < spider_obj.masterResults.Count; j++) {
-                            // check to see if curr_page is already in masterResults
-                            if (curr_page.getUrl() == spider_obj.masterResults.ElementAt(j).getUrl()) {
-                                found = true;
-                                // if curr_page has already been visited, just add all the referring URLs from this curr_page
-                                // object to masterResults
-                                List<string> curr_page_ref_urls = curr_page.getReferencedByUrls();
-                                for (int g = 0; g < curr_page_ref_urls.Count; g++) {
-                                    if (!spider_obj.masterResults.ElementAt(j).getReferencedByUrls().Contains(curr_page_ref_urls.ElementAt(g))) {
-                                        spider_obj.masterResults.ElementAt(j).addReferencedByUrl(curr_page_ref_urls.ElementAt(g));
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        // if this is a new page...
-                        if (!found) {
-                            spider_obj.masterResults.Add(curr_page);
-                            new_page_found_index = spider_obj.masterResults.Count - 1;
-                        }
-                    }
-                    // if this is a new page (outside thread lock now)...
-                    if (!found) {
-                        List<SpiderPage> temp_n_pages = getLinks(spider_obj.masterResults.ElementAt(new_page_found_index), spider_obj);
-                        for (int k = 0; k < temp_n_pages.Count; k++) {
-                            // add all the links on this page to its linking pages list
-                            spider_obj.masterResults.ElementAt(new_page_found_index).addLinkingToUrl(temp_n_pages.ElementAt(k).getUrl());
-                        }
-                        // add all the links on this page to the list of links to be spidered in the next pass
-                        n_pages.AddRange(temp_n_pages);
-                    }
-                }
-				// put a new work item into the ThreadPool queue; multi-threaded recursion here since this new work item 
-				// will call spiderHelper() with all the new links found in this iteration
-                ThreadPool.QueueUserWorkItem(new WaitCallback(spiderHelper), new SpiderDataWrapper(spider_obj, n_pages));
-            }
 			// set this thread id's status back to not working in _thread_status
             spider_obj._thread_status.ElementAt(thread_index)[1] = 0;
         }
@@ -290,19 +300,19 @@ namespace Spider {
 	public class SpiderDataWrapper {
 
 		Spider spider_obj;
-		List<SpiderPage> new_pages;
+		SpiderPage new_page;
 
-		public SpiderDataWrapper(Spider spider_obj, List<SpiderPage> new_pages) {
+		public SpiderDataWrapper(Spider spider_obj, SpiderPage new_page) {
 			this.spider_obj = spider_obj;
-			this.new_pages = new_pages;
+			this.new_page = new_page;
 		}
 
 		public Spider getSpiderObject() {
 			return this.spider_obj;
 		}
 
-		public List<SpiderPage> getNewPages() {
-			return this.new_pages;
+		public List<SpiderPage> getNewPage() {
+			return this.new_page;
 		}
 	}
 }

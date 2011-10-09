@@ -17,14 +17,13 @@ namespace Spider {
          */
         public SpiderPage(string url, string ref_url) {
             this.url = url;
-
             this.linking_to_urls = new List<string>();
             this.referenced_by_urls = new List<string>();
 
             this.referenced_by_urls.Add(ref_url);
         }
 
-        /* SpiderPage() -        make a new SpiderPage object with pre-populated lists of linking and referring URLs
+        /* SpiderPage() -  	make a new SpiderPage object with pre-populated lists of linking and referring URLs
          *  @url -          the URL of this page
          *  @ref_url -      a list of strings representing the URLs of pages that refer (i.e. link to) this page
          *  @link_url -     a list of strings representing the URLs that this page links to
