@@ -9,6 +9,7 @@ namespace Spider {
 
         string url;
 		string final_url;
+        bool final_url_flag;
 		List<string> alias_urls;
         List<string> linking_to_urls;
         List<string> referenced_by_urls;
@@ -19,6 +20,7 @@ namespace Spider {
          */
         public SpiderPage(string url, string ref_url) {
             this.url = url;
+            this.final_url_flag = false;
 			this.alias_urls = new List<string>();
             this.linking_to_urls = new List<string>();
             this.referenced_by_urls = new List<string>();
@@ -31,9 +33,10 @@ namespace Spider {
          *  @ref_url -      a list of strings representing the URLs of pages that refer (i.e. link to) this page
          *  @link_url -     a list of strings representing the URLs that this page links to
          */
-        public SpiderPage(string p_url, List<string> alias_url, List<string> ref_url, List<string> link_url) {
-            this.url = p_url;
-			this.alias_urls = alias_url;
+        public SpiderPage(string url, string final_url, List<string> ref_url, List<string> link_url) {
+            this.url = url;
+            this.final_url = final_url;
+            this.final_url_flag = true;
             this.linking_to_urls = link_url;
             this.referenced_by_urls = ref_url;
         }
@@ -50,6 +53,11 @@ namespace Spider {
 			return this.final_url;
 		}
 
+        /* getAliasUrls() -     return this SpiderPage's list of URLs that are aliases to it
+         */
+        public List<string> getAliasUrls() {
+            return this.alias_urls;
+        }
         /* getLinkingToUrls() - return this SpiderPage's list of URLs that it links to
          */
         public List<string> getLinkingToUrls() {
@@ -61,12 +69,6 @@ namespace Spider {
         public List<string> getReferencedByUrls() {
             return this.referenced_by_urls;
         }
-
-		/* setFinalUrl() -		set this SpiderPage's final url
-		 */
-		public void setFinalUrl(string final_url) {
-			this.final_url = final url;
-		}
 		
 		/* addAliasUrl() -		add a new alias URL to this SpiderPage's list
 		 *	@ new_url -		the new URL to be added
@@ -87,6 +89,14 @@ namespace Spider {
          */
         public void addReferencedByUrl(string new_url) {
             this.referenced_by_urls.Add(new_url);
+        }
+
+        /* finalUrlNeeded() -       check if this page still needs its final url filled in,
+         *                          i.e. it's content hasn't been spidered yet; spiderProcess
+         *                          will see this on the next round
+         */
+        public bool finalUrlNeeded() {
+            return this.final_url_flag;
         }
     }
 }

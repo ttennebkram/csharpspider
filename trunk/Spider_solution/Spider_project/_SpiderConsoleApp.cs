@@ -25,8 +25,15 @@ namespace SpiderConsoleApp {
 
             for (int i = 0; i < results.Count; i++) {
                 SpiderPage curr = results.ElementAt(i);
+                List<string> curr_aliases = curr.getAliasUrls();
                 List<string> curr_links = curr.getLinkingToUrls();
                 List<string> curr_refs = curr.getReferencedByUrls();
+
+                System.Console.WriteLine("\t" + curr.getUrl() + " has " + curr_links.Count + " alias(es):");
+                for (int q = 0; q < curr_links.Count; q++)
+                {
+                    System.Console.WriteLine("\t\t" + curr_aliases.ElementAt(q));
+                }
 
                 System.Console.WriteLine("\t" + curr.getUrl() + " links to " + curr_links.Count + " page(s):");
                 for (int k = 0; k < curr_links.Count; k++) {

@@ -124,28 +124,56 @@ namespace Spider {
 			_thread_status.ElementAt(0)[1] = 1;
 
             lock (this) {
+
                 int candidate_pages_count = this._candidate_pages.Count;
+                SpiderPage current_candidate_page = null;
+                SpiderPage current_master_page = null;
+                
                 for (int i = 0; i < candidate_pages_count; i++) {
                     bool found = false;
-                    SpiderPage current_page = this._candidate_pages.ElementAt(i);
+                    current_candidate_page = this._candidate_pages.ElementAt(i);
+
+                    if (current_candidate_page.finalUrlNeeded()) {
+                        for (int m = 0; m < this.masterResults.Count; m++) {
+                            current_master_page = this.masterResults.ElementAt(m);
+                            if (!current_master_page.finalUrlNeeded()
+                                && current_candidate_page.getUrl() == current_master_page.getFinalUrl()) {
+                                
+                                found = true;
+                                List<string> current_candidate_page_ref_urls = current_candidate_page.getReferencedByUrls();
+                                for (int g = 0; g < current_candidate_page_ref_urls.Count; g++) {
+                                    if (!current_master_page.getReferencedByUrls().Contains(current_candidate_page_ref_urls.ElementAt(g))) {
+                                        this.masterResults.ElementAt(j).addReferencedByUrl(current_candidate_page_ref_urls.ElementAt(g));
+                                    }
+                                }
+                                    
+
 
                     for (int j = 0; j < this.masterResults.Count; j++) {
-                        // check to see if current_page is already in masterResults
-                        if (current_page.getFinalUrl() == this.masterResults.ElementAt(j).getFinalUrl()) {
+                        current_master_page = this.masterResults.ElementAt(j);
+
+                        if (current_master_page.finalUrlNeeded()) {
+                            if (current_candidate_page.getUrl() == current_master_page.getUrl()) {
+
+
+                        }
+
+
+                        if (current_candidate_page.getFinalUrl() == this.masterResults.ElementAt(j).getFinalUrl()) {
                             found = true;
 							// add an alias entry in the masterResults if we were redirected here
-							if (current_page.getUrl() != current_page.getFinalUrl()) {
-								this.masterResults.ElementAt(j).addAliasUrl(current_page.getUrl());
+							if (current_candidate_page.getUrl() != current_candidate_page.getFinalUrl()) {
+								this.masterResults.ElementAt(j).addAliasUrl(current_candidate_page.getUrl());
 							}
                             // add all the linking URLs from the curr_page object to masterResults
-                            List<string> current_page_link_urls = current_page.getLinkingToUrls();
+                            List<string> current_page_link_urls = current_candidate_page.getLinkingToUrls();
                             for (int q = 0; q < current_page_link_urls.Count; q++) {
                                 if (!this.masterResults.ElementAt(j).getLinkingToUrls().Contains(current_page_link_urls.ElementAt(q))) {
                                     this.masterResults.ElementAt(j).addLinkingToUrl(current_page_link_urls.ElementAt(q));
                                 }
                             }
                             // add all the referring URLs from the curr_page object to masterResults
-                            List<string> current_page_ref_urls = current_page.getReferencedByUrls();
+                            List<string> current_page_ref_urls = current_candidate_page.getReferencedByUrls();
                             for (int g = 0; g < current_page_ref_urls.Count; g++) {
                                 if (!this.masterResults.ElementAt(j).getReferencedByUrls().Contains(current_page_ref_urls.ElementAt(g))) {
                                     this.masterResults.ElementAt(j).addReferencedByUrl(current_page_ref_urls.ElementAt(g));
@@ -156,8 +184,8 @@ namespace Spider {
                     }
                     // if this is a new page...
                     if (!found) {
-                        this.masterResults.Add(current_page);
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new _spiderFetch_SpiderDataWrapper(this, current_page));
+                        this.masterResults.Add(current_candidate_page);
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new _SpiderDataWrapper_spiderFetch(this, current_candidate_page));
                     }
                 }
                 // remove all the candidate pages we've just processed
@@ -179,7 +207,7 @@ namespace Spider {
          */
         static void spiderFetch(Object args) {
 
-            _spiderFetch_SpiderDataWrapper wrapper = (_spiderFetch_SpiderDataWrapper) args;
+            _SpiderDataWrapper_spiderFetch wrapper = (_SpiderDataWrapper_spiderFetch) args;
 
             Spider spider_obj = wrapper.getSpiderObject();
             SpiderPage current_page = wrapper.getNewPage();
@@ -210,13 +238,13 @@ namespace Spider {
 
             spider_obj.writeStatus("thread id: " + Thread.CurrentThread.ManagedThreadId + ", spiderFetch(): fetching " + current_page.getUrl());
 			
-			_getLinks_SpiderDataWrapper gl_wrapper = getLinks(current_page, spider_obj);
+			_SpiderDataWrapper_getLinks gl_wrapper = getLinks(current_page, spider_obj);
 			string current_page_final_url = gl_wrapper.getFinalUrl();
 			List<SpiderPage> current_page_links = gl_wrapper.getNewLinks();
 						
 			List<string> current_page_link_strings = new List<string>();
 			for (int q = 0; q < current_page_links.Count; q++) {
-				SpiderPage qth_page = current_page_links.ElementAt(q)
+                SpiderPage qth_page = current_page_links.ElementAt(q);
 				spider_obj._candidate_pages.Add(qth_page);
 				current_page_link_strings.Add(qth_page.getUrl());
 			}
@@ -231,7 +259,7 @@ namespace Spider {
          *             		page)
          *  @s			- 	the Spider object in use
          */
-       	static _getLinks_SpiderDataWrapper getLinks(SpiderPage startp, Spider s) {
+       	static _SpiderDataWrapper_getLinks getLinks(SpiderPage startp, Spider s) {
             List<string> pre_pages = new List<string>();
 
 			string final_url = "";
@@ -259,7 +287,8 @@ namespace Spider {
 
             if (resp != null) {
 				// record the final Url after any redirects from this link
-				final_url = resp.ResponseUri;
+                final_url = resp.ResponseUri.AbsoluteUri;
+
                 Stream resp_stream = resp.GetResponseStream();
                 string temp_string = null;
                 int count = 0;
@@ -299,16 +328,16 @@ namespace Spider {
                 }
             }
 
-            return new _getLinks_SpiderDataWrapper(final_url, new_pages);
+            return new _SpiderDataWrapper_getLinks(final_url, new_pages);
         }
     }
 
-	private class _spiderFetch_SpiderDataWrapper {
+	public class _SpiderDataWrapper_spiderFetch {
 
 		Spider spider_obj;
 		SpiderPage new_page;
 
-		public _spiderFetch_SpiderDataWrapper(Spider spider_obj, SpiderPage new_page) {
+		public _SpiderDataWrapper_spiderFetch(Spider spider_obj, SpiderPage new_page) {
 			this.spider_obj = spider_obj;
 			this.new_page = new_page;
 		}
@@ -322,21 +351,21 @@ namespace Spider {
 		}
 	}
 	
-	private class _getLinks_SpiderDataWrapper {
+	public class _SpiderDataWrapper_getLinks {
 		
 		string final_url;
 		List<SpiderPage> new_links;
 		
-		public _getLinks_SpiderDataWrapper(string final_url, List<SpiderPage> new_links) {
+		public _SpiderDataWrapper_getLinks(string final_url, List<SpiderPage> new_links) {
 			this.final_url = final_url;
 			this.new_links = new_links;
 		}
 		
-		string getFinalUrl() {
+		public string getFinalUrl() {
 			return this.final_url;
 		}
 		
-		List<SpiderPage> getNewLinks() {
+		public List<SpiderPage> getNewLinks() {
 			return this.new_links;
 		}
 	}
