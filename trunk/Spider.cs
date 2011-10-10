@@ -131,8 +131,12 @@ namespace Spider {
 
                     for (int j = 0; j < this.masterResults.Count; j++) {
                         // check to see if current_page is already in masterResults
-                        if (current_page.getUrl() == this.masterResults.ElementAt(j).getUrl()) {
+                        if (current_page.getFinalUrl() == this.masterResults.ElementAt(j).getFinalUrl()) {
                             found = true;
+							// add an alias entry in the masterResults if we were redirected here
+							if (current_page.getUrl() != current_page.getFinalUrl()) {
+								this.masterResults.ElementAt(j).addAliasUrl(current_page.getUrl());
+							}
                             // add all the linking URLs from the curr_page object to masterResults
                             List<string> current_page_link_urls = current_page.getLinkingToUrls();
                             for (int q = 0; q < current_page_link_urls.Count; q++) {
@@ -153,7 +157,7 @@ namespace Spider {
                     // if this is a new page...
                     if (!found) {
                         this.masterResults.Add(current_page);
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new SpiderDataWrapper(this, current_page));
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(spiderFetch), new _spiderFetch_SpiderDataWrapper(this, current_page));
                     }
                 }
                 // remove all the candidate pages we've just processed
@@ -169,13 +173,13 @@ namespace Spider {
 
         /* spiderFetch -   	ThreadPool QueueUserWorkItem method, gets the links on a page and adds them to the 
 		 *					candidates list.
-         *  @args -        	A SpiderWrapperHelper object that will be cast back from a normal object.  We
-		 *					have to take normal objects as input because QueueUserWorkItem requires a single 
-		 *					generic object to give its worker delegate (spideHelper) as an argument.
+         *  @args -        	A _spiderFetch_SpiderDataWrapper object that will be cast back from a normal object.  We
+		 *					have to take normal objects as input because = requires a single 
+		 *					generic object to give its worker delegate (spiderFetch) as an argument.
          */
         static void spiderFetch(Object args) {
 
-            SpiderDataWrapper wrapper = (SpiderDataWrapper) args;
+            _spiderFetch_SpiderDataWrapper wrapper = (_spiderFetch_SpiderDataWrapper) args;
 
             Spider spider_obj = wrapper.getSpiderObject();
             SpiderPage current_page = wrapper.getNewPage();
@@ -205,15 +209,18 @@ namespace Spider {
             }
 
             spider_obj.writeStatus("thread id: " + Thread.CurrentThread.ManagedThreadId + ", spiderFetch(): fetching " + current_page.getUrl());
-			List<SpiderPage> current_page_links = getLinks(current_page, spider_obj);
 			
+			_getLinks_SpiderDataWrapper gl_wrapper = getLinks(current_page, spider_obj);
+			string current_page_final_url = gl_wrapper.getFinalUrl();
+			List<SpiderPage> current_page_links = gl_wrapper.getNewLinks();
+						
 			List<string> current_page_link_strings = new List<string>();
 			for (int q = 0; q < current_page_links.Count; q++) {
-				string qth_page_url = current_page_links.ElementAt(q).getUrl();
-				spider_obj._candidate_pages.Add(new SpiderPage(qth_page_url, current_page.getUrl()));
-				current_page_link_strings.Add(qth_page_url);
+				SpiderPage qth_page = current_page_links.ElementAt(q)
+				spider_obj._candidate_pages.Add(qth_page);
+				current_page_link_strings.Add(qth_page.getUrl());
 			}
-			spider_obj._candidate_pages.Add(new SpiderPage(current_page.getUrl(), current_page.getReferencedByUrls(), current_page_link_strings));
+			spider_obj._candidate_pages.Add(new SpiderPage(current_page.getUrl(), current_page_final_url, current_page.getReferencedByUrls(), current_page_link_strings));
 
 			// set this thread id's status back to not working in _thread_status
             spider_obj._thread_status.ElementAt(thread_index)[1] = 0;
@@ -224,8 +231,10 @@ namespace Spider {
          *             		page)
          *  @s			- 	the Spider object in use
          */
-        public static List<SpiderPage> getLinks(SpiderPage startp, Spider s) {
+       	static _getLinks_SpiderDataWrapper getLinks(SpiderPage startp, Spider s) {
             List<string> pre_pages = new List<string>();
+
+			string final_url = "";
             List<SpiderPage> new_pages = new List<SpiderPage>();
 
             StringBuilder sb = new StringBuilder();
@@ -249,6 +258,8 @@ namespace Spider {
             }
 
             if (resp != null) {
+				// record the final Url after any redirects from this link
+				final_url = resp.ResponseUri;
                 Stream resp_stream = resp.GetResponseStream();
                 string temp_string = null;
                 int count = 0;
@@ -288,16 +299,16 @@ namespace Spider {
                 }
             }
 
-            return new_pages;
+            return new _getLinks_SpiderDataWrapper(final_url, new_pages);
         }
     }
 
-	public class SpiderDataWrapper {
+	private class _spiderFetch_SpiderDataWrapper {
 
 		Spider spider_obj;
 		SpiderPage new_page;
 
-		public SpiderDataWrapper(Spider spider_obj, SpiderPage new_page) {
+		public _spiderFetch_SpiderDataWrapper(Spider spider_obj, SpiderPage new_page) {
 			this.spider_obj = spider_obj;
 			this.new_page = new_page;
 		}
@@ -308,6 +319,25 @@ namespace Spider {
 
 		public SpiderPage getNewPage() {
 			return this.new_page;
+		}
+	}
+	
+	private class _getLinks_SpiderDataWrapper {
+		
+		string final_url;
+		List<SpiderPage> new_links;
+		
+		public _getLinks_SpiderDataWrapper(string final_url, List<SpiderPage> new_links) {
+			this.final_url = final_url;
+			this.new_links = new_links;
+		}
+		
+		string getFinalUrl() {
+			return this.final_url;
+		}
+		
+		List<SpiderPage> getNewLinks() {
+			return this.new_links;
 		}
 	}
 }

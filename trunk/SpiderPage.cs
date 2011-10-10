@@ -8,6 +8,8 @@ namespace Spider {
     public class SpiderPage {
 
         string url;
+		string final_url;
+		List<string> alias_urls;
         List<string> linking_to_urls;
         List<string> referenced_by_urls;
 
@@ -17,6 +19,7 @@ namespace Spider {
          */
         public SpiderPage(string url, string ref_url) {
             this.url = url;
+			this.alias_urls = new List<string>();
             this.linking_to_urls = new List<string>();
             this.referenced_by_urls = new List<string>();
 
@@ -28,8 +31,9 @@ namespace Spider {
          *  @ref_url -      a list of strings representing the URLs of pages that refer (i.e. link to) this page
          *  @link_url -     a list of strings representing the URLs that this page links to
          */
-        public SpiderPage(string p_url, List<string> ref_url, List<string> link_url) {
+        public SpiderPage(string p_url, List<string> alias_url, List<string> ref_url, List<string> link_url) {
             this.url = p_url;
+			this.alias_urls = alias_url;
             this.linking_to_urls = link_url;
             this.referenced_by_urls = ref_url;
         }
@@ -39,6 +43,12 @@ namespace Spider {
         public string getUrl() {
             return this.url;
         }
+
+		/* getFinalUrl() -	return this SpiderPage's final URL
+		 */
+		public string getFinalUrl() {
+			return this.final_url;
+		}
 
         /* getLinkingToUrls() - return this SpiderPage's list of URLs that it links to
          */
@@ -51,6 +61,19 @@ namespace Spider {
         public List<string> getReferencedByUrls() {
             return this.referenced_by_urls;
         }
+
+		/* setFinalUrl() -		set this SpiderPage's final url
+		 */
+		public void setFinalUrl(string final_url) {
+			this.final_url = final url;
+		}
+		
+		/* addAliasUrl() -		add a new alias URL to this SpiderPage's list
+		 *	@ new_url -		the new URL to be added
+		 */
+		public void addAliasUrl(string new_url) {
+			this.alias_urls.Add(new_url);
+		}
 
         /* addLinkingToUrl() -  add a new URL to this SpiderPage's list of URLs that it links to
          *  @new_url -          the new URL to add to the list
