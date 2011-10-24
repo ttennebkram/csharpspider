@@ -292,6 +292,7 @@ namespace Spider {
                                     real_page_index = Int32.Parse(added_candidate_urls.ElementAt(already_added_candidate_index)[1]);
                                 }
                                 else {
+									spider_object.writeStatus("running findPageIndex()");
                                     real_page_index = spider_object.findPageIndex(current_candidate_page.getUrl());
                                 }
 
