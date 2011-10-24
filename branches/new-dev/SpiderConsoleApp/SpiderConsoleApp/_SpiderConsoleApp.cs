@@ -43,7 +43,11 @@ namespace New_Spider {
                 if (curr_links.Count > 0) {
                     System.Console.WriteLine("\t" + curr_links.Count + " linked-to page(s):");
                     for (int k = 0; k < curr_links.Count; k++) {
-                        System.Console.WriteLine("\t\t" + curr_links.ElementAt(k).getNormalizedUrl());
+                        string curr_link_url = curr_links.ElementAt(k).getNormalizedUrl();
+                        if (!curr_links.ElementAt(k).isLegalLink()) {
+                            curr_link_url = "< illegal link not followed >";
+                        }
+                        System.Console.WriteLine("\t\t" + curr_link_url);
                         System.Console.WriteLine("\t\t\t original href text: " + curr_links.ElementAt(k).getOriginalUrl());
                     }
                 }

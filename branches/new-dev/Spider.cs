@@ -463,15 +463,13 @@ namespace Spider {
                         pre_pages.Add(link.Url);
                     };
 
-                    // parse out the distinct links on this page, removing any duplicates
+                    // parse out the distinct links on this page, removing any duplicates, and marking illegal links as such
                     List<string> distinct_pre_pages = pre_pages.Distinct().ToList();
                     for (int m = 0; m < distinct_pre_pages.Count; m++) {
                         string new_url = distinct_pre_pages.ElementAt(m);
-                        string new_normalized_url = spider_object.normalizeUrl(new_url, candidate_page.getUrl());
-                        SpiderLink new_link = new SpiderLink(new_url, new_normalized_url, candidate_page.getUrl());
-                        if (new_normalized_url.Count() < 1) {
-                            new_normalized_url = "< illegal link not followed >";
-                            new_link = new SpiderLink(new_url, new_normalized_url, candidate_page.getUrl());
+                        SpiderLink new_link = new SpiderLink(new_url, spider_object.normalizeUrl(new_url, candidate_page.getUrl()),
+                                                                candidate_page.getUrl());
+                        if (new_link.getNormalizedUrl().Count() < 1) {
                             new_link.setIllegalLink();
                         }
                         candidate_page.addLinkingToLink(new_link);
