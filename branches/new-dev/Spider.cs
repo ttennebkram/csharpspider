@@ -56,7 +56,7 @@ namespace Spider {
          *                        this spider object
          */
 		public void spider() {
-			this.writeStatus("baseUrl = " + this.rootUrl);
+			this.writeStatus("rootUrl = " + this.rootUrl);
             this.writeStatus("startUrl = " + this.startUrl);
             this.writeStatus("niceness = " + this.niceness);
             this.writeStatus("spider() - starting crawl...");
@@ -65,10 +65,8 @@ namespace Spider {
             _SpiderPageCandidate spc = new _SpiderPageCandidate(new SpiderLink(this.startUrl, 
                                                                     this.normalizeUrl(this.startUrl, ""), this.startUrl));
             // add the first _SpiderPageCandidate to the _candidate_pages queue, make a thread to process it, and
-            // make also make a thread to start spiderProcess()
-            
+            // make also make a thread to run spiderProcess()
             this._candidate_pages.Add(spc);
-
             this.addThreadStatus();
             this.addThreadStatus();
             ThreadPool.QueueUserWorkItem(new WaitCallback(fetchPage), new _SpiderWorkItemDataWrapper(this, 0));
@@ -112,7 +110,7 @@ namespace Spider {
          *      @base_url       - the base URL of the link that this URL comes from
          */
         public string normalizeUrl(string url, string base_url) {
-            // trailing "/" ???
+            // trailing "/"?
             if (!url.EndsWith("/")) {
                 if (url.LastIndexOf('.') < url.LastIndexOf('/')) {
                     url = url + "/";
@@ -261,7 +259,7 @@ namespace Spider {
                 // all of this is dependent on _master_pages and _candidate_pages, need the spider object locked
                 lock (spider_object) {
 
-                    // PART 1:  process the candidate pages that we're crawled by the worker threads created in
+                    // PART 1:  process the candidate pages that were crawled by the worker threads created in
                     //          the last round of spiderProcess()
                     
                     // list of all the links found in the candidate pages we process
@@ -516,8 +514,8 @@ namespace Spider {
             this.addReferredByLink(candidate_page_link);
 		}
 		
-        /*  _candidate_isDone()         - true if this object has been processed with fetchPage(),
-         *                                false otherwise
+        /*  _candidate_isDone()         - true if this object has been processed to completion with 
+		 *								  fetchPage(), false otherwise
          */
 		public bool _candidate_isDone() {
 			return this._done;
