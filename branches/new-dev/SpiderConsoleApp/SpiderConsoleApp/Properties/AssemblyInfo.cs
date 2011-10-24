@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SpiderConsoleApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("New Idea Engineering Inc.")]
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("SpiderConsoleApp")]
-[assembly: AssemblyCopyright("Copyright © New Idea Engineering Inc.")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6634aca4-7ae3-4753-a5d0-e852b4485560")]
+[assembly: Guid("f4fca253-c5f1-48c1-8365-3f9367e9e6df")]
 
 // Version information for an assembly consists of the following four values:
 //

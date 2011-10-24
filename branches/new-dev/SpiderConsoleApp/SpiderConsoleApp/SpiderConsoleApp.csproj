@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E772637F-BCE1-48CF-AAE3-3609F5A0CDD2}</ProjectGuid>
+    <ProjectGuid>{75A1548D-EC3D-4EA9-812C-3C74AA74CD9D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SpiderConsoleApp</RootNamespace>
@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\..\HtmlAgilityPack.dll</HintPath>
+      <HintPath>..\..\..\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="..\..\Spider.cs">
       <Link>Spider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SpiderLink.cs">
+      <Link>SpiderLink.cs</Link>
     </Compile>
     <Compile Include="..\..\SpiderPage.cs">
       <Link>SpiderPage.cs</Link>

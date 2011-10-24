@@ -1,0 +1,11 @@
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\bin\Debug\SpiderConsoleApp.exe
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\bin\Debug\SpiderConsoleApp.pdb
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\bin\Debug\HtmlAgilityPack.dll
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\SpiderConsoleApp.exe
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\Spider_solution\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\SpiderConsoleApp.pdb
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\SpiderConsoleApp.exe
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\SpiderConsoleApp.pdb
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\SpiderConsoleApp\SpiderConsoleApp\bin\Debug\SpiderConsoleApp.exe
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\SpiderConsoleApp\SpiderConsoleApp\bin\Debug\SpiderConsoleApp.pdb
+C:\Users\esayer\Documents\Visual Studio 2010\Projects\Spider\SpiderConsoleApp\SpiderConsoleApp\obj\x86\Debug\ResolveAssemblyReference.cache
