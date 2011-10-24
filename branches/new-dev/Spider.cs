@@ -135,7 +135,8 @@ namespace Spider {
                     return base_url + "/" + url;
                 }
                 catch(UriFormatException e) {
-                    this.writeStatus("normalizeUrl(): " + e.Message + "; a link to " + url + " is illegal.");
+                    this.writeStatus("normalizeUrl(): " + e.Message + "; a link to " + url + " is illegal.\n" + 
+                                        "\treferring-page: " + base_url);
                     return "";
                 }
             }
