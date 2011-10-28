@@ -11,16 +11,12 @@ namespace New_Spider {
 
         static void Main(string[] args) {
 			if (args.Length > 0) {
-				if (args[1] == "help") {
+				if (args[0] == "help") {
 					helpMessage();
 				}
 				else {
-					if (args.Length > 3) {
-						string[] s_args = new string[args.Length - 1];
-						for (int i = 1; i < args.Length; i++) {
-							s_args[i - 1] = args[i];
-						}
-						doSpider(s_args);
+					if (args.Length > 2) {
+						doSpider(args);
 					}
 					else {
 						errorMessage();
@@ -33,11 +29,16 @@ namespace New_Spider {
 		}
 		
 		static void helpMessage() {
-			System.Console.WriteLine("helpMessage()");
+            System.Console.WriteLine("\n SpiderConsoleApp.exe [n_threads] [n_ms_niceness] [root_url] [start_url]\n");
+            System.Console.WriteLine(" n_threads:     max number of threads to be in use at once");
+            System.Console.WriteLine(" n_ms_niceness: niceness factor in ms to wait between http requests");
+            System.Console.WriteLine(" root_url:      the root url");
+            System.Console.WriteLine(" start_url:     (optional) the starting url; root_url otherwise");
+            System.Console.WriteLine("\n example:\n\n    .\\SpiderConsoleApp.exe 20 500 http://www.site.com http://www.site.com/");
 		}
 		
 		static void errorMessage() {
-			System.Console.WriteLine("errorMessage()");
+            System.Console.WriteLine("\n **** Incorrect arguments, run 'SpiderConsoleApp.exe help' for help. ****");
 		}
 		
 		static void doSpider(string[] args) {
@@ -48,8 +49,8 @@ namespace New_Spider {
 			string root_url = "";
 			string start_url = "";
 			try {
-				n_threads = Int32.ParseInt(args[0]);
-				n_ms_timeout = Int32.ParseInt(args[1]);
+				n_threads = Int32.Parse(args[0]);
+				n_ms_timeout = Int32.Parse(args[1]);
 				root_url = args[2];
 				if (args.Length > 3) {
 					start_url = args[3];
