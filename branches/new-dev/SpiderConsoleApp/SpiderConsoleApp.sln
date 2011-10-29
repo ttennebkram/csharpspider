@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderConsoleApp", "SpiderConsoleApp\SpiderConsoleApp.csproj", "{75A1548D-EC3D-4EA9-812C-3C74AA74CD9D}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "setup", "setup\setup.vdproj", "{FD076CCB-BDEB-4817-8306-2CDB09A9FD69}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "NIE_Spider", "NIE_Spider\NIE_Spider.vdproj", "{8E5CD0F0-1802-485E-A900-F9D7BEE151F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +15,8 @@ Global
 		{75A1548D-EC3D-4EA9-812C-3C74AA74CD9D}.Debug|x86.Build.0 = Debug|x86
 		{75A1548D-EC3D-4EA9-812C-3C74AA74CD9D}.Release|x86.ActiveCfg = Release|x86
 		{75A1548D-EC3D-4EA9-812C-3C74AA74CD9D}.Release|x86.Build.0 = Release|x86
-		{FD076CCB-BDEB-4817-8306-2CDB09A9FD69}.Debug|x86.ActiveCfg = Debug
-		{FD076CCB-BDEB-4817-8306-2CDB09A9FD69}.Release|x86.ActiveCfg = Release
+		{8E5CD0F0-1802-485E-A900-F9D7BEE151F2}.Debug|x86.ActiveCfg = Debug
+		{8E5CD0F0-1802-485E-A900-F9D7BEE151F2}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
