@@ -609,15 +609,25 @@ namespace Spider {
 		int _index;
 		Spider _spider;
 		
+        /*  _SpiderWorkItemDataWrapper()    - make a new _SpiderWorkItemDataWrapper object
+         * 
+         *      @spider                     - the spider object to wrap
+         *      @index                      - the index of the page in _candidate_pages to be processed
+         *                                    by the worker thread that uses this wrapper
+         */
 		public _SpiderWorkItemDataWrapper(Spider spider, int index) {
 			this._spider = spider;
             this._index = index;
 		}
 
+        /*  getSpiderObject()               - return the spider object inside this wrapper
+         */
         public Spider getSpiderObject() {
             return this._spider;
         }
 
+        /*  getCandidatePage()              - return the candidate page at the index inside this wrapper
+         */
 		public _SpiderPageCandidate getCandidatePage() {
             this.getSpiderObject().writeStatus("getCandidatePage(): " + this._index);
             return this._spider.getCandidatePageAtIndex(this._index);
