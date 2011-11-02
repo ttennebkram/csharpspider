@@ -146,12 +146,6 @@ namespace Spider {
             }
         }
 
-        void acquireFetchLock() {
-            lock (this._fetch_lock) {
-                Thread.Sleep(this.niceness);
-            }
-        }
-
         /*  findPageIndex()     - find the integer index of the page in _master_results with the same URL
          *                        as the URL given as input, or -1 if it isn't found
          *      @url            - the URL to search for
@@ -213,19 +207,40 @@ namespace Spider {
             return this._candidate_pages.ElementAt(index);
         }
 
+        /*  getLastPageIndex()              - return the index of the last page in this spider object's
+         *                                    _master_results list
+         */
         public int getLastPageIndex() {
             return this._candidate_pages.Count - 1;
         }
 
+        /*  addThreadStatus()                - create a new entry in _thread_status; run on the creation
+         *                                    of a new worker thread
+         */
         void addThreadStatus() {
             lock (this._thread_status) {
                 this._thread_status.Add(1);
             }
         }
 
+        /*  removeThreadStatus()            - remove an entry from _thread_status; run when a worker thread
+         *                                    is finished
+         */
         void removeThreadStatus() {
             lock (this._thread_status) {
                 this._thread_status.RemoveAt(this._thread_status.FindIndex(1, delegate(int i) { return i == 1; }));
+            }
+        }
+
+        /*  acquireFetchLock()              - lock the _fetch_lock object and make the current worker
+         *                                    thread sleep for the amount specified as this spider's
+         *                                    niceness factor
+         */
+        void acquireFetchLock() {
+            if (this.niceness > 0) {
+                lock (this._fetch_lock) {
+                    Thread.Sleep(this.niceness);
+                }
             }
         }
 
@@ -387,7 +402,6 @@ namespace Spider {
                         spider_object.addThreadStatus();
                         ThreadPool.QueueUserWorkItem(new WaitCallback(fetchPage),
                                                       new _SpiderWorkItemDataWrapper(spider_object, spider_object._candidate_pages.Count - 1));
-                        //Thread.Sleep(spider_object.niceness);
                     }
                 }
             }
@@ -544,10 +558,16 @@ namespace Spider {
             this._done = true;
         }
 
+        /*  _candidate_isError()        - return whether fetchPage() marked this candidate page as
+         *                                an error page, i.e. it resulted in a 404, etc.
+         */
         public bool _candidate_isError() {
             return this._error;
         }
 
+        /*  _candidate_setError()       - sets this candidate page as an error, used by fetchPage()
+         *                                when processing a candidate page results in a 404, etc.
+         */
         public void _candidate_setError() {
             this._error = true;
         }
