@@ -17,7 +17,9 @@ namespace Spider {
         string startUrl;
         int niceness;
         int thread_count;
-		
+
+        Object _fetch_lock;
+
 		List<int> _thread_status;
 		List<SpiderPage> _master_results;
 		
@@ -43,6 +45,8 @@ namespace Spider {
 	      	this.startUrl = startUrl;
 	       	this.niceness = niceness;
 	      	this.thread_count = thread_count;
+
+            this._fetch_lock = new Object();
 
             this._thread_status = new List<int>();
 	      	this._master_results = new List<SpiderPage>();
@@ -139,6 +143,12 @@ namespace Spider {
                                         "\treferring-page: " + base_url);
                     return "";
                 }
+            }
+        }
+
+        void acquireFetchLock() {
+            lock (this._fetch_lock) {
+                Thread.Sleep(this.niceness);
             }
         }
 
@@ -377,7 +387,7 @@ namespace Spider {
                         spider_object.addThreadStatus();
                         ThreadPool.QueueUserWorkItem(new WaitCallback(fetchPage),
                                                       new _SpiderWorkItemDataWrapper(spider_object, spider_object._candidate_pages.Count - 1));
-                        Thread.Sleep(spider_object.niceness);
+                        //Thread.Sleep(spider_object.niceness);
                     }
                 }
             }
@@ -412,6 +422,8 @@ namespace Spider {
             //req.Timeout = 1000;
             HttpWebResponse resp = null;
             try {
+                // sleep for the niceness time of this spider object
+                spider_object.acquireFetchLock();
                 resp = (HttpWebResponse)req.GetResponse();
             }
             catch (Exception e) {
