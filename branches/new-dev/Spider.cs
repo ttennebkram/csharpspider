@@ -377,6 +377,7 @@ namespace Spider {
                         spider_object.addThreadStatus();
                         ThreadPool.QueueUserWorkItem(new WaitCallback(fetchPage),
                                                       new _SpiderWorkItemDataWrapper(spider_object, spider_object._candidate_pages.Count - 1));
+                        Thread.Sleep(spider_object.niceness);
                     }
                 }
             }
