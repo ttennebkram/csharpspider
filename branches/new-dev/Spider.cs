@@ -125,7 +125,18 @@ namespace Spider {
          *      @base_url       - the base URL of the link that this URL comes from
          */
         public string normalizeUrl(string url, string base_url) {
-            // trailing "/"?
+            // remove any whitespace
+            url = url.TrimStart(' ');
+            url = url.TrimEnd(' ');
+            // ignore anchors...
+            if (url.StartsWith("#")) {
+                return "";
+            }
+            // ignore PDFs...
+            if (url.EndsWith(".pdf")) {
+                return "";
+            }
+            // trailing "/"???
             if (!url.EndsWith("/")) {
                 if (url.LastIndexOf('.') < url.LastIndexOf('/') &&
                     url.LastIndexOf('#') < url.LastIndexOf('/')) {
@@ -147,32 +158,31 @@ namespace Spider {
                         return "";
                     }*/
                     // return nothing for absolute URLs outside this site
-                    if (url.StartsWith("http://")) {
+                    if (url.StartsWith("http://") || url.StartsWith("https://")) {
                         return "";
                     }
-                    else {
-                        // relative URL and the base URL is *not* a distinct page, e.g. http://www.site.com/
-                        if (base_url.EndsWith("/")) {
-                            return base_url + url;
-                        }
-                        else {
-                            if (url.StartsWith("javascript:")) {
-                                return "";
-                            }
-                            // need to parse out the real base URL, e.g. http://www.site.com/index.html
-                            if (base_url.Contains("/")) {
-                                string[] parts = base_url.Split('/');
-                                string new_base_url = parts[0];
-                                // keep all but the last URL segment, as split with "/", to get the base URL
-                                for (int i = 1; i < parts.Length - 1; i++) {
-                                    new_base_url = new_base_url + "/" + parts[i];
-                                }
-                                return new_base_url + "/" + url;
-                            }
-                            // lastly the http://www.site.com case, where we just need to add a "/"
-                            return base_url + "/" + url;
-                        }
+                    if (url.StartsWith("javascript:") ||
+                        url.StartsWith("mailto:") ||
+                        url.StartsWith("news:") ||
+                        url.StartsWith("ftp:")) {
+                        return "";
                     }
+                    // relative URL and the base URL is *not* a distinct page, e.g. http://www.site.com/
+                    if (base_url.EndsWith("/")) {
+                        return base_url + url;
+                    }
+                   // need to parse out the real base URL, e.g. http://www.site.com/index.html
+                    if (base_url.Contains("/")) {
+                        string[] parts = base_url.Split('/');
+                        string new_base_url = parts[0];
+                        // keep all but the last URL segment, as split with "/", to get the base URL
+                        for (int i = 1; i < parts.Length - 1; i++) {
+                            new_base_url = new_base_url + "/" + parts[i];
+                        }
+                        return new_base_url + "/" + url;
+                    }
+                    // lastly the http://www.site.com case, where we just need to add a "/"
+                    return base_url + "/" + url;
                 }
                 catch(UriFormatException e) {
                     this.writeStatus("normalizeUrl(): " + e.Message + "; a link to " + url + " is illegal.\n" + 
@@ -352,11 +362,9 @@ namespace Spider {
                             if (already_added_candidate_index > -1 || current_candidate_page._candidate_isAliasCandidate()) {
                                 int real_page_index = -1;
                                 if (already_added_candidate_index > -1) {
-                                    spider_object.writeStatus("\naaaaaaaaa - " + current_candidate_page.getUrl() + "\n");
                                     real_page_index = Int32.Parse(added_candidate_urls.ElementAt(already_added_candidate_index)[1]);
                                 }
                                 else {
-                                    spider_object.writeStatus("\nbbbbbbbbb - " + current_candidate_page.getUrl() + "\n");
 									spider_object.writeStatus("running findPageIndex()");
                                     real_page_index = spider_object.findPageIndex(current_candidate_page.getUrl());
                                 }
