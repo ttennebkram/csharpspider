@@ -19,15 +19,15 @@ namespace Spider {
         int thread_count;
 
         Object _fetch_lock;
-
 		List<int> _thread_status;
-		List<SpiderPage> _master_results;
 		
+		List<SpiderPage> _master_results;
 		List<_SpiderPageCandidate> _candidate_pages;
 		
-		List<SpiderStatus> status_messages;
+		List<SpiderStatus> _status_messages;
 		
         /*  Spider()            - creates a new Spider object
+		 *
          *      @rootUrl        - the root URL of the site to be spidered
          *      @startUrl       - the initial URL of the site to be spidered
          *      @niceness       - time to wait in between HTTP requests (not currently respected, for testing)
@@ -54,6 +54,17 @@ namespace Spider {
 			this._candidate_pages = new List<_SpiderPageCandidate>();
 
 			ThreadPool.SetMaxThreads(this.thread_count, this.thread_count);
+		}
+		
+		/*	Spider()				- creates a new Spider object *with* a status message queue
+		 *		
+		 *		@rootUrl...			- same as above
+		 *		@status_messages	- list of SpiderStatus objects to use for status messages
+		 */
+		public Spider(string rootUrl, string startUrl, int niceness, int thread_count, List<SpiderStatus> status_messages) {
+			: this(rootUrl, startUrl, niceness, thread_count);
+			
+			this.status_messages = status_messages;
 		}
 		
         /*  spider()            - public-facing method for actually beginning to spider with
