@@ -24,7 +24,7 @@ namespace Spider {
 		List<SpiderPage> _master_results;
 		List<_SpiderPageCandidate> _candidate_pages;
 		
-		List<SpiderStatus> _status_messages;
+		List<SpiderStatus> status_messages;
 		
         /*  Spider()            - creates a new Spider object
 		 *
@@ -58,11 +58,11 @@ namespace Spider {
 		
 		/*	Spider()				- creates a new Spider object *with* a status message queue
 		 *		
-		 *		@rootUrl...			- same as above
+		 *		@rootUrl ...		- same as above
 		 *		@status_messages	- list of SpiderStatus objects to use for status messages
 		 */
-		public Spider(string rootUrl, string startUrl, int niceness, int thread_count, List<SpiderStatus> status_messages) {
-			: this(rootUrl, startUrl, niceness, thread_count);
+		public Spider(string rootUrl, string startUrl, int niceness, int thread_count, List<SpiderStatus> status_messages) 
+            : this(rootUrl, startUrl, niceness, thread_count) {
 			
 			this.status_messages = status_messages;
 		}
@@ -127,7 +127,8 @@ namespace Spider {
         public string normalizeUrl(string url, string base_url) {
             // trailing "/"?
             if (!url.EndsWith("/")) {
-                if (url.LastIndexOf('.') < url.LastIndexOf('/')) {
+                if (url.LastIndexOf('.') < url.LastIndexOf('/') &&
+                    url.LastIndexOf('#') < url.LastIndexOf('/')) {
                     url = url + "/";
                 }
             }
@@ -140,14 +141,38 @@ namespace Spider {
             }
             else {
                 try {
+                    /*
                     Uri uri = new Uri(url);
                     if (uri.IsAbsoluteUri) {
                         return "";
+                    }*/
+                    // return nothing for absolute URLs outside this site
+                    if (url.StartsWith("http://")) {
+                        return "";
                     }
-                    if (base_url.EndsWith("/")) {
-                        return base_url + url;
+                    else {
+                        // relative URL and the base URL is *not* a distinct page, e.g. http://www.site.com/
+                        if (base_url.EndsWith("/")) {
+                            return base_url + url;
+                        }
+                        else {
+                            if (url.StartsWith("javascript:")) {
+                                return "";
+                            }
+                            // need to parse out the real base URL, e.g. http://www.site.com/index.html
+                            if (base_url.Contains("/")) {
+                                string[] parts = base_url.Split('/');
+                                string new_base_url = parts[0];
+                                // keep all but the last URL segment, as split with "/", to get the base URL
+                                for (int i = 1; i < parts.Length - 1; i++) {
+                                    new_base_url = new_base_url + "/" + parts[i];
+                                }
+                                return new_base_url + "/" + url;
+                            }
+                            // lastly the http://www.site.com case, where we just need to add a "/"
+                            return base_url + "/" + url;
+                        }
                     }
-                    return base_url + "/" + url;
                 }
                 catch(UriFormatException e) {
                     this.writeStatus("normalizeUrl(): " + e.Message + "; a link to " + url + " is illegal.\n" + 
@@ -222,7 +247,7 @@ namespace Spider {
          *                                    _master_results list
          */
         public int getLastPageIndex() {
-            return this._candidate_pages.Count - 1;
+            return this._master_results.Count - 1;
         }
 
         /*  addThreadStatus()                - create a new entry in _thread_status; run on the creation
@@ -327,9 +352,11 @@ namespace Spider {
                             if (already_added_candidate_index > -1 || current_candidate_page._candidate_isAliasCandidate()) {
                                 int real_page_index = -1;
                                 if (already_added_candidate_index > -1) {
+                                    spider_object.writeStatus("\naaaaaaaaa - " + current_candidate_page.getUrl() + "\n");
                                     real_page_index = Int32.Parse(added_candidate_urls.ElementAt(already_added_candidate_index)[1]);
                                 }
                                 else {
+                                    spider_object.writeStatus("\nbbbbbbbbb - " + current_candidate_page.getUrl() + "\n");
 									spider_object.writeStatus("running findPageIndex()");
                                     real_page_index = spider_object.findPageIndex(current_candidate_page.getUrl());
                                 }
@@ -357,8 +384,8 @@ namespace Spider {
                             if (!found) {
                                 SpiderPage new_page = current_candidate_page._candidate_makeNewSpiderPage();
                                 new_links_found.AddRange(new_page.getLinkingToLinks());
-                                added_candidate_urls.Add(new string[] { new_page.getUrl(), spider_object.getLastPageIndex().ToString() });
                                 spider_object.addNewPage(new_page);
+                                added_candidate_urls.Add(new string[] { new_page.getUrl(), spider_object.getLastPageIndex().ToString() });
                             }
 
                             // this candidate page is done being processed- remove it from the list
@@ -441,12 +468,13 @@ namespace Spider {
 
 			List<string> pre_pages = new List<string>();
 
-			byte[] buf = new byte[8192];
+	        byte[] buf = new byte[8192];
             StringBuilder sb = new StringBuilder();
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(candidate_page._candidate_getUrl());
-            //req.Timeout = 1000;
+
             HttpWebResponse resp = null;
             try {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(candidate_page._candidate_getUrl());
+                //req.Timeout = 1000;
                 // sleep for the niceness time of this spider object
                 spider_object.acquireFetchLock();
                 resp = (HttpWebResponse)req.GetResponse();
