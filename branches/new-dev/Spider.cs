@@ -199,6 +199,7 @@ namespace Spider {
          *      @url            - the URL to search for
          */
 		public int findPageIndex(string url) {
+			this.writeStatus("running findPageIndex()");
             int ret = -1;
             // need to lock here because we're depending on _master_results.Count
             lock (this._master_results) {
@@ -369,7 +370,6 @@ namespace Spider {
                                     real_page_index = Int32.Parse(added_candidate_urls.ElementAt(already_added_candidate_index)[1]);
                                 }
                                 else {
-									spider_object.writeStatus("running findPageIndex()");
                                     real_page_index = spider_object.findPageIndex(current_candidate_page.getUrl());
                                 }
 
