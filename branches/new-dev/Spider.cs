@@ -20,7 +20,6 @@ namespace Spider {
 
         Object _fetch_lock;
 		List<int> _thread_status;
-		
 		List<SpiderPage> _master_results;
 		List<_SpiderPageCandidate> _candidate_pages;
 		
@@ -30,7 +29,7 @@ namespace Spider {
 		 *
          *      @rootUrl        - the root URL of the site to be spidered
          *      @startUrl       - the initial URL of the site to be spidered
-         *      @niceness       - time to wait in between HTTP requests (not currently respected, for testing)
+         *      @niceness       - time to wait in between HTTP requests
          *      @thread_count   - the max number of work-item threads to spawn
          */
 		public Spider(string rootUrl, string startUrl, int niceness, int thread_count) {
@@ -83,8 +82,8 @@ namespace Spider {
             // also make a thread to run spiderProcess()
             this._candidate_pages.Add(spc);
             this.addThreadStatus();
-            this.addThreadStatus();
             ThreadPool.QueueUserWorkItem(new WaitCallback(fetchPage), new _SpiderWorkItemDataWrapper(this, 0));
+            this.addThreadStatus();
             ThreadPool.QueueUserWorkItem(new WaitCallback(spiderProcess), this);
 		}
 
@@ -120,7 +119,8 @@ namespace Spider {
             return this._master_results;
         }
 
-        /*  normalizeUrl()      - fix the given URL by normalization standards to be added later...
+        /*  normalizeUrl()      - normalize the input url, work in progress...
+		 *
          *      @url            - the URL string to normalize
          *      @base_url       - the base URL of the link that this URL comes from
          */
@@ -231,7 +231,7 @@ namespace Spider {
             lock (this._candidate_pages) {
                 for (int i = 0; i < this._candidate_pages.Count; i++) {
                     if (url == _candidate_pages.ElementAt(i)._candidate_getUrl()) {
-                        // we found the page so return its index
+                        // we found the page! return its index...
                         ret = i;
                         break;
                     }
@@ -240,14 +240,16 @@ namespace Spider {
 			return ret;
 		}
 		
-        /*  getPageAtIndex()    - return the page in _master_results at the given index
-         *      @index          - integer index of the page we want (generally found with findPageIndex())
+        /*  getPageAtIndex()    			- return the page in _master_results at the given index
+		 *
+         *      @index          			- integer index of the page we want (generally found with findPageIndex())
          */
 		public SpiderPage getPageAtIndex(int index) {
 			return this._master_results.ElementAt(index);
 		}
 
         /*  getCandidatePageAtIndex()       - return the page in_candidate_pages at the given index
+		 *
          *      @index                      - integer index of the page we want (generally found with
          *                                    getCandidatePageAtIndex())
          */
@@ -312,8 +314,8 @@ namespace Spider {
         /*  spiderProcess()         - master spider process:
          * 
          *                            PART 1:     process the candidate pages that the fetchPage() threads
-         *                                        crawled from PART 2 last round, generate a list of new
-         *                                        links for PART 2
+         *                                        crawled after PART 2 of last round, generate a list of new
+         *                                        links for PART 2 (of this round)
          *                            PART 2:     make new fetchPage() threads to crawl the new candidate pages
          *                                        found in the links from PART 1
          *
@@ -459,7 +461,7 @@ namespace Spider {
             while (spider_object._candidate_pages.Count > 0 &&
                     spider_object._candidate_pages.Any(delegate(_SpiderPageCandidate spc) { return !spc._candidate_isError(); }));
 
-            // we're done spidering now, clear our _thread_status (the 0-index _thread_status is reserved for
+            // we're done spidering now, clear our _thread_status (the 0-index in _thread_status is reserved for
             // spiderProcess(), worker threads are indices > 0)
             spider_object._thread_status.RemoveAt(0);
         }
@@ -473,6 +475,7 @@ namespace Spider {
 		static void fetchPage(object o) {
             // unpack the _SpiderWorkItemDataWrapper object
             _SpiderWorkItemDataWrapper wi = (_SpiderWorkItemDataWrapper) o;
+			// get our spider object and our candidate_page to process
 			Spider spider_object = wi.getSpiderObject();
             _SpiderPageCandidate candidate_page = wi.getCandidatePage();
 
@@ -480,7 +483,6 @@ namespace Spider {
 
 	        byte[] buf = new byte[8192];
             StringBuilder sb = new StringBuilder();
-
             HttpWebResponse resp = null;
             try {
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(candidate_page._candidate_getUrl());
@@ -580,6 +582,7 @@ namespace Spider {
 		string _candidate_url;
 		
         /*  _SpiderPageCandidate()      - makes a new _SpiderPageCandidate object from a SpiderLink
+		 *
          *      @candidate_page_link    - the link that this _SpiderPageCandidate will be made from,
          *                                using the link's normalized URL as this object's URL and 
          *                                the link itself as this object's first referred-by link
@@ -662,7 +665,7 @@ namespace Spider {
          * 
          *      @spider                     - the spider object to wrap
          *      @index                      - the index of the page in _candidate_pages to be processed
-         *                                    by the worker thread that uses this wrapper
+         *                                    by the worker thread that gets this wrapper object
          */
 		public _SpiderWorkItemDataWrapper(Spider spider, int index) {
 			this._spider = spider;
