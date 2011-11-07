@@ -128,6 +128,8 @@ namespace Spider {
             // remove any whitespace
             url = url.TrimStart(' ');
             url = url.TrimEnd(' ');
+            // replace &amp; with '&'
+            url = url.Replace("&amp;", "&");
             // ignore anchors...
             if (url.StartsWith("#")) {
                 return "";
