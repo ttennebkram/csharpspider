@@ -531,7 +531,6 @@ namespace Spider {
 
 					// add the source into the candidate page object
 					candidate_page.setPageContent(sb.ToString());
-					
                     // parse the page for links
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(sb.ToString());
@@ -647,7 +646,7 @@ namespace Spider {
         /*  _candidate_makeNewSpiderPage    - makes a new SpiderPage out of this candidate object
          */
 		public SpiderPage _candidate_makeNewSpiderPage() {
-            SpiderPage s = new SpiderPage(this.getUrl(), this.getLinkingToLinks(), this.getReferredByLinks());
+            SpiderPage s = new SpiderPage(this.getUrl(), this.getLinkingToLinks(), this.getReferredByLinks(), this.getPageContent());
             if (this._candidate_isAliasCandidate()) {
                 s.addAliasUrl(this._candidate_getUrl());
             }

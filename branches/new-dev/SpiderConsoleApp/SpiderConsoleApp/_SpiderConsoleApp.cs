@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Spider;
 
@@ -79,6 +80,18 @@ namespace New_Spider {
                 	List<string> curr_aliases = curr.getAliasUrls();
                 	List<SpiderLink> curr_links = curr.getLinkingToLinks();
                 	List<SpiderLink> curr_refs = curr.getReferredByLinks();
+
+                    // make a filename into which we'll ouput this page's content
+                    string[] fileparts = (new Uri(curr.getUrl())).Segments;
+                    string filename = i + "-";
+                    if (fileparts.Length > 1) {
+                        filename = filename + fileparts[1].Replace("/", "_");
+                    }
+                    filename = filename + ".html";
+                  
+                    System.Console.WriteLine("pages\\" + filename);
+                    StreamWriter sw = new StreamWriter("pages\\" + filename);
+                    sw.Write(curr.getPageContent());
 
                 	System.Console.WriteLine("--------------------------------------------------------------------");
                 	System.Console.WriteLine("REAL_PAGE - " + curr.getUrl());

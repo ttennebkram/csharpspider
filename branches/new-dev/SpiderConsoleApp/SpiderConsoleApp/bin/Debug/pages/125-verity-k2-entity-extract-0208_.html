@@ -1,0 +1,2388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+  
+   <meta name="Robots" content="index,follow" /> 
+  
+  
+  <!-- ideaeng3 -->
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+  <link id="primaryStylesheet" rel="stylesheet" type="text/css" href="/display/common.css?styleId=1195403&amp;RK=1313457992853&amp;CE=37"/>
+  
+  <link id="slideShowStylesheet" rel="stylesheet" type="text/css" href="/universal/styles/squarespace-gallery-slideshow.css?CE=37"/>
+  
+  
+  
+  <!-- Google Web Fonts -->
+  <script type="text/javascript">
+    WebFontConfig = {
+      google: { families: [ 'Oswald', 'Josefin Slab', 'Copse', 'Wire One', 'Goudy Bookletter 1911', 'Yanone Kaffeesatz', 'Cabin Sketch:bold', 'Raleway:100', 'Droid Serif', 'Droid Sans', 'Pacifico' ] }
+    };
+    (function() {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+    })();
+  </script>
+
+  <script type="text/javascript" src="/universal/yui/yahoo-dom-event/yahoo-dom-event.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/connection/connection_core-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/json/json-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/animation/animation-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/selector/selector.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/element/element.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/global.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/lightbox.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/api.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/base64.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/yahoo/yahoo-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/event/event-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/event-mouseenter/event-mouseenter-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/yui/element/element-min.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/social.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/datefmt.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/yui2-yui3-bridge.js?CE=37"></script>
+<script type="text/javascript" src="/universal/scripts/squarespace-gallery-slideshow.js?CE=37"></script>
+
+
+  <script type="text/javascript">
+  // <![CDATA[
+
+    Squarespace.Constants.SS_AUTHKEY = encodeURIComponent("");
+    Squarespace.Constants.WEBSITE_TITLE =  "New Idea Engineering"; 
+    
+     Squarespace.Constants.CURRENT_MODULE_ID = "11117255"; 
+    
+    
+    
+    Squarespace.Constants.ADMINISTRATION_UI =  false; 
+    
+    
+    
+
+    
+
+    
+
+    
+
+  // ]]>
+  </script>
+
+      <title>Poor Man's Entity Extraction in Verity K2 - New Idea Engineering</title>
+  
+
+  <!-- End Heading -->
+
+  <script src="/storage/jquery-1.6.2.min.js" type="text/javascript"></script>
+<meta name="msvalidate.01" content="9A84BD93EC0AB3D9B08D21BC043A4A4B" />
+
+</head>
+
+<body  id="modulePage11117255"   >
+
+  <script type="text/javascript">
+  YAHOO.util.Event.onDOMReady(function() {
+    if (document.location.href.indexOf("SSLogoutOk=true") != -1) {
+      new Squarespace.FixedPositionTip("Logout Successful", "You have been successfully logged out.", { xMargin: 15, yMargin: 15, icon: "/universal/images/helptip-info.png", orientation: "upper-right", viewportFixed: true, autoHide: 1800 }).show();
+    }
+  });
+</script>
+
+    
+
+  <script type="text/javascript">
+    YAHOO.util.Event.addListener(document, "keyup", function (e) { if (!e) { e = event; } if (e.keyCode == 27) { document.location.href = "/login/?returnUrl=%2Fverity-k2-entity-extract-0208%2F"; } });
+  </script>
+
+
+
+
+      
+    <script src="/storage/prepare-popup.js" type="text/javascript"></script>
+  
+
+  <div id="canvasWrapper"><div id="canvas">
+  
+  
+
+  <div id="pageHeaderWrapper"><div id="pageHeader">
+
+      <div id="navigationTop"><div id="navigationTop-sectionContent4399795" class="horizontalNavigationBar"><ul class="content-navigation">
+    
+  <li class="module   " id="navigationTop-moduleContentWrapper10690140">
+
+    <div id="navigationTop-moduleContent10690140">
+
+              <a id="navigationTop-moduleLink10690140" class=" " href="/" ><span>Home</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734248">
+
+    <div id="navigationTop-moduleContent10734248">
+
+              <a id="navigationTop-moduleLink10734248" class=" folder-link" href="/search-overview/" ><span>Search Overview</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734248">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10734478">
+
+    <div id="navigationTop-moduleContent10734478">
+
+              <a id="navigationTop-moduleLink10734478" class=" " href="/the-business-of-search/" ><span>The Business of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734479">
+
+    <div id="navigationTop-moduleContent10734479">
+
+              <a id="navigationTop-moduleLink10734479" class=" " href="/the-technology-of-search/" ><span>The Technology of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper11033984">
+
+    <div id="navigationTop-moduleContent11033984">
+
+              <a id="navigationTop-moduleLink11033984" class=" " href="/publications-and-resources/" ><span>Publications and Resources</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734225">
+
+    <div id="navigationTop-moduleContent10734225">
+
+              <a id="navigationTop-moduleLink10734225" class=" folder-link" href="/professional-services/" ><span>Professional Services</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734225">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10734289">
+
+    <div id="navigationTop-moduleContent10734289">
+
+              <a id="navigationTop-moduleLink10734289" class=" " href="/enterprise-search-consulting/" ><span>Enterprise Search Consulting</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734293">
+
+    <div id="navigationTop-moduleContent10734293">
+
+              <a id="navigationTop-moduleLink10734293" class=" " href="/microsoft-enterprise-search/" ><span>Microsoft Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734298">
+
+    <div id="navigationTop-moduleContent10734298">
+
+              <a id="navigationTop-moduleLink10734298" class=" " href="/google-enterprise-search/" ><span>Google Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734310">
+
+    <div id="navigationTop-moduleContent10734310">
+
+              <a id="navigationTop-moduleLink10734310" class=" " href="/autonomy/" ><span>Autonomy</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734321">
+
+    <div id="navigationTop-moduleContent10734321">
+
+              <a id="navigationTop-moduleLink10734321" class=" " href="/advanced-technology-group/" ><span>Advanced Technology Group</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734325">
+
+    <div id="navigationTop-moduleContent10734325">
+
+              <a id="navigationTop-moduleLink10734325" class=" " href="/verity-k2/" ><span>Verity K2 (Autonomy)</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734332">
+
+    <div id="navigationTop-moduleContent10734332">
+
+              <a id="navigationTop-moduleLink10734332" class=" " href="/open-source/" ><span>Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734333">
+
+    <div id="navigationTop-moduleContent10734333">
+
+              <a id="navigationTop-moduleLink10734333" class=" " href="/vendor-selection/" ><span>Vendor Selection</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734231">
+
+    <div id="navigationTop-moduleContent10734231">
+
+              <a id="navigationTop-moduleLink10734231" class=" folder-link" href="/products/" ><span>Products</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734231">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10734347">
+
+    <div id="navigationTop-moduleContent10734347">
+
+              <a id="navigationTop-moduleLink10734347" class=" " href="/searchtrack-analytics/" ><span>SearchTrack??? Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734356">
+
+    <div id="navigationTop-moduleContent10734356">
+
+              <a id="navigationTop-moduleLink10734356" class=" " href="/unified-federated-manager/" ><span>Unified Federated Mangager</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734374">
+
+    <div id="navigationTop-moduleContent10734374">
+
+              <a id="navigationTop-moduleLink10734374" class=" " href="/xp/" ><span>XPump??? Content Extraction Toolkit</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734236">
+
+    <div id="navigationTop-moduleContent10734236">
+
+              <a id="navigationTop-moduleLink10734236" class=" folder-link" href="/industry-trends/" ><span>Industry Trends</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734236">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10734395">
+
+    <div id="navigationTop-moduleContent10734395">
+
+              <a id="navigationTop-moduleLink10734395" class=" " href="/commercial-vs-open-source/" ><span>Commercial vs. Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734402">
+
+    <div id="navigationTop-moduleContent10734402">
+
+              <a id="navigationTop-moduleLink10734402" class=" " href="/compliance-and-ediscovery/" ><span>Compliance and eDiscovery</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734404">
+
+    <div id="navigationTop-moduleContent10734404">
+
+              <a id="navigationTop-moduleLink10734404" class=" " href="/federated-search/" ><span>Federated Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734405">
+
+    <div id="navigationTop-moduleContent10734405">
+
+              <a id="navigationTop-moduleLink10734405" class=" " href="/fix-or-replace/" ><span>Fix or Replace?</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734412">
+
+    <div id="navigationTop-moduleContent10734412">
+
+              <a id="navigationTop-moduleLink10734412" class=" " href="/search-analytics/" ><span>Search Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734417">
+
+    <div id="navigationTop-moduleContent10734417">
+
+              <a id="navigationTop-moduleLink10734417" class=" " href="/search-security/" ><span>Search Security</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734419">
+
+    <div id="navigationTop-moduleContent10734419">
+
+              <a id="navigationTop-moduleLink10734419" class=" " href="/taxonomies/" ><span>Taxonomies</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734241">
+
+    <div id="navigationTop-moduleContent10734241">
+
+              <a id="navigationTop-moduleLink10734241" class=" folder-link" href="/publications/" ><span>Publications</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734241">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10889656">
+
+    <div id="navigationTop-moduleContent10889656">
+
+              <a id="navigationTop-moduleLink10889656" class="offsite-link " href="http://www.enterprisesearchblog.com/" onclick="this.target='new';"><span>Blog</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734446">
+
+    <div id="navigationTop-moduleContent10734446">
+
+              <a id="navigationTop-moduleLink10734446" class=" " href="/newsletter/" ><span>Newsletter</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper11403626">
+
+    <div id="navigationTop-moduleContent11403626">
+
+              <a id="navigationTop-moduleLink11403626" class=" " href="/newsletter?subscribe" ><span>Newsletter - Subscribe</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734438">
+
+    <div id="navigationTop-moduleContent10734438">
+
+              <a id="navigationTop-moduleLink10734438" class=" " href="/glossary/" ><span>Glossary</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734452">
+
+    <div id="navigationTop-moduleContent10734452">
+
+              <a id="navigationTop-moduleLink10734452" class=" " href="/white-papers/" ><span>White Papers</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10889685">
+
+    <div id="navigationTop-moduleContent10889685">
+
+              <a id="navigationTop-moduleLink10889685" class="offsite-link " href="http://www.searchdev.org" onclick="this.target='new';"><span>SearchDev.org</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10889703">
+
+    <div id="navigationTop-moduleContent10889703">
+
+              <a id="navigationTop-moduleLink10889703" class="offsite-link " href="http://www.searchcomponentsonline.com/" onclick="this.target='new';"><span>Search Components Online</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationTop-moduleContentWrapper10734254">
+
+    <div id="navigationTop-moduleContent10734254">
+
+              <a id="navigationTop-moduleLink10734254" class=" folder-link" href="/about-us/" ><span>About Us</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationTop-folderContent10734254">
+            
+  <li class="module   " id="navigationTop-moduleContentWrapper10734485">
+
+    <div id="navigationTop-moduleContent10734485">
+
+              <a id="navigationTop-moduleLink10734485" class=" " href="/who-we-are/" ><span>Who We Are</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734486">
+
+    <div id="navigationTop-moduleContent10734486">
+
+              <a id="navigationTop-moduleLink10734486" class=" " href="/management-team/" ><span>Management Team</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734488">
+
+    <div id="navigationTop-moduleContent10734488">
+
+              <a id="navigationTop-moduleLink10734488" class=" " href="/clients/" ><span>Clients</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734490">
+
+    <div id="navigationTop-moduleContent10734490">
+
+              <a id="navigationTop-moduleLink10734490" class=" " href="/partners/" ><span>Partners</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationTop-moduleContentWrapper10734494">
+
+    <div id="navigationTop-moduleContent10734494">
+
+              <a id="navigationTop-moduleLink10734494" class=" " href="/contact-us/" ><span>Contact</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  </ul><br class="clearer"/></div></div>
+
+    
+     
+      
+      <script src="/storage/date.js" type="text/javascript"></script>
+<script src="/storage/banner.js" type="text/javascript"></script>
+      
+    
+    
+
+      <div id="navigationBottom"><div id="navigationBottom-sectionContent4399795" class="horizontalNavigationBar"><ul class="content-navigation">
+    
+  <li class="module   " id="navigationBottom-moduleContentWrapper10690140">
+
+    <div id="navigationBottom-moduleContent10690140">
+
+              <a id="navigationBottom-moduleLink10690140" class=" " href="/" ><span>Home</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734248">
+
+    <div id="navigationBottom-moduleContent10734248">
+
+              <a id="navigationBottom-moduleLink10734248" class=" folder-link" href="/search-overview/" ><span>Search Overview</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734248">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734478">
+
+    <div id="navigationBottom-moduleContent10734478">
+
+              <a id="navigationBottom-moduleLink10734478" class=" " href="/the-business-of-search/" ><span>The Business of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734479">
+
+    <div id="navigationBottom-moduleContent10734479">
+
+              <a id="navigationBottom-moduleLink10734479" class=" " href="/the-technology-of-search/" ><span>The Technology of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper11033984">
+
+    <div id="navigationBottom-moduleContent11033984">
+
+              <a id="navigationBottom-moduleLink11033984" class=" " href="/publications-and-resources/" ><span>Publications and Resources</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734225">
+
+    <div id="navigationBottom-moduleContent10734225">
+
+              <a id="navigationBottom-moduleLink10734225" class=" folder-link" href="/professional-services/" ><span>Professional Services</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734225">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734289">
+
+    <div id="navigationBottom-moduleContent10734289">
+
+              <a id="navigationBottom-moduleLink10734289" class=" " href="/enterprise-search-consulting/" ><span>Enterprise Search Consulting</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734293">
+
+    <div id="navigationBottom-moduleContent10734293">
+
+              <a id="navigationBottom-moduleLink10734293" class=" " href="/microsoft-enterprise-search/" ><span>Microsoft Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734298">
+
+    <div id="navigationBottom-moduleContent10734298">
+
+              <a id="navigationBottom-moduleLink10734298" class=" " href="/google-enterprise-search/" ><span>Google Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734310">
+
+    <div id="navigationBottom-moduleContent10734310">
+
+              <a id="navigationBottom-moduleLink10734310" class=" " href="/autonomy/" ><span>Autonomy</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734321">
+
+    <div id="navigationBottom-moduleContent10734321">
+
+              <a id="navigationBottom-moduleLink10734321" class=" " href="/advanced-technology-group/" ><span>Advanced Technology Group</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734325">
+
+    <div id="navigationBottom-moduleContent10734325">
+
+              <a id="navigationBottom-moduleLink10734325" class=" " href="/verity-k2/" ><span>Verity K2 (Autonomy)</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734332">
+
+    <div id="navigationBottom-moduleContent10734332">
+
+              <a id="navigationBottom-moduleLink10734332" class=" " href="/open-source/" ><span>Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734333">
+
+    <div id="navigationBottom-moduleContent10734333">
+
+              <a id="navigationBottom-moduleLink10734333" class=" " href="/vendor-selection/" ><span>Vendor Selection</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734231">
+
+    <div id="navigationBottom-moduleContent10734231">
+
+              <a id="navigationBottom-moduleLink10734231" class=" folder-link" href="/products/" ><span>Products</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734231">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734347">
+
+    <div id="navigationBottom-moduleContent10734347">
+
+              <a id="navigationBottom-moduleLink10734347" class=" " href="/searchtrack-analytics/" ><span>SearchTrack??? Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734356">
+
+    <div id="navigationBottom-moduleContent10734356">
+
+              <a id="navigationBottom-moduleLink10734356" class=" " href="/unified-federated-manager/" ><span>Unified Federated Mangager</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734374">
+
+    <div id="navigationBottom-moduleContent10734374">
+
+              <a id="navigationBottom-moduleLink10734374" class=" " href="/xp/" ><span>XPump??? Content Extraction Toolkit</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734236">
+
+    <div id="navigationBottom-moduleContent10734236">
+
+              <a id="navigationBottom-moduleLink10734236" class=" folder-link" href="/industry-trends/" ><span>Industry Trends</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734236">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734395">
+
+    <div id="navigationBottom-moduleContent10734395">
+
+              <a id="navigationBottom-moduleLink10734395" class=" " href="/commercial-vs-open-source/" ><span>Commercial vs. Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734402">
+
+    <div id="navigationBottom-moduleContent10734402">
+
+              <a id="navigationBottom-moduleLink10734402" class=" " href="/compliance-and-ediscovery/" ><span>Compliance and eDiscovery</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734404">
+
+    <div id="navigationBottom-moduleContent10734404">
+
+              <a id="navigationBottom-moduleLink10734404" class=" " href="/federated-search/" ><span>Federated Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734405">
+
+    <div id="navigationBottom-moduleContent10734405">
+
+              <a id="navigationBottom-moduleLink10734405" class=" " href="/fix-or-replace/" ><span>Fix or Replace?</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734412">
+
+    <div id="navigationBottom-moduleContent10734412">
+
+              <a id="navigationBottom-moduleLink10734412" class=" " href="/search-analytics/" ><span>Search Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734417">
+
+    <div id="navigationBottom-moduleContent10734417">
+
+              <a id="navigationBottom-moduleLink10734417" class=" " href="/search-security/" ><span>Search Security</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734419">
+
+    <div id="navigationBottom-moduleContent10734419">
+
+              <a id="navigationBottom-moduleLink10734419" class=" " href="/taxonomies/" ><span>Taxonomies</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734241">
+
+    <div id="navigationBottom-moduleContent10734241">
+
+              <a id="navigationBottom-moduleLink10734241" class=" folder-link" href="/publications/" ><span>Publications</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734241">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10889656">
+
+    <div id="navigationBottom-moduleContent10889656">
+
+              <a id="navigationBottom-moduleLink10889656" class="offsite-link " href="http://www.enterprisesearchblog.com/" onclick="this.target='new';"><span>Blog</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734446">
+
+    <div id="navigationBottom-moduleContent10734446">
+
+              <a id="navigationBottom-moduleLink10734446" class=" " href="/newsletter/" ><span>Newsletter</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper11403626">
+
+    <div id="navigationBottom-moduleContent11403626">
+
+              <a id="navigationBottom-moduleLink11403626" class=" " href="/newsletter?subscribe" ><span>Newsletter - Subscribe</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734438">
+
+    <div id="navigationBottom-moduleContent10734438">
+
+              <a id="navigationBottom-moduleLink10734438" class=" " href="/glossary/" ><span>Glossary</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734452">
+
+    <div id="navigationBottom-moduleContent10734452">
+
+              <a id="navigationBottom-moduleLink10734452" class=" " href="/white-papers/" ><span>White Papers</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10889685">
+
+    <div id="navigationBottom-moduleContent10889685">
+
+              <a id="navigationBottom-moduleLink10889685" class="offsite-link " href="http://www.searchdev.org" onclick="this.target='new';"><span>SearchDev.org</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10889703">
+
+    <div id="navigationBottom-moduleContent10889703">
+
+              <a id="navigationBottom-moduleLink10889703" class="offsite-link " href="http://www.searchcomponentsonline.com/" onclick="this.target='new';"><span>Search Components Online</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="navigationBottom-moduleContentWrapper10734254">
+
+    <div id="navigationBottom-moduleContent10734254">
+
+              <a id="navigationBottom-moduleLink10734254" class=" folder-link" href="/about-us/" ><span>About Us</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="navigationBottom-folderContent10734254">
+            
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734485">
+
+    <div id="navigationBottom-moduleContent10734485">
+
+              <a id="navigationBottom-moduleLink10734485" class=" " href="/who-we-are/" ><span>Who We Are</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734486">
+
+    <div id="navigationBottom-moduleContent10734486">
+
+              <a id="navigationBottom-moduleLink10734486" class=" " href="/management-team/" ><span>Management Team</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734488">
+
+    <div id="navigationBottom-moduleContent10734488">
+
+              <a id="navigationBottom-moduleLink10734488" class=" " href="/clients/" ><span>Clients</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734490">
+
+    <div id="navigationBottom-moduleContent10734490">
+
+              <a id="navigationBottom-moduleLink10734490" class=" " href="/partners/" ><span>Partners</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="navigationBottom-moduleContentWrapper10734494">
+
+    <div id="navigationBottom-moduleContent10734494">
+
+              <a id="navigationBottom-moduleLink10734494" class=" " href="/contact-us/" ><span>Contact</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  </ul><br class="clearer"/></div></div>
+
+
+  </div></div>
+  
+  
+
+  
+
+  
+  <div id="pageBodyWrapper"><div id="pageBody">
+  
+  <div id="sidebar1Wrapper" class="verticalNavigationBarWrapper"><div class="iw-vnb1"><div class="iw-vnb2"><div class="iw-vnb3"><div class="iw-vnb4"><div id="sidebar1" class="verticalNavigationBar">
+
+  
+
+    <div id="sectionContent4399795" class="sectionWrapper promotedContainer "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+       <div class="caption">Top</div> 
+
+      
+        
+          <ul class="content-navigation">
+  <li class="module   " id="moduleContentWrapper10690140">
+
+    <div id="moduleContent10690140">
+
+              <a id="moduleLink10690140" class=" " href="/" ><span>Home</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734248">
+
+    <div id="moduleContent10734248">
+
+              <a id="moduleLink10734248" class=" folder-link" href="/search-overview/" ><span>Search Overview</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734248">
+            
+  <li class="module   " id="moduleContentWrapper10734478">
+
+    <div id="moduleContent10734478">
+
+              <a id="moduleLink10734478" class=" " href="/the-business-of-search/" ><span>The Business of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734479">
+
+    <div id="moduleContent10734479">
+
+              <a id="moduleLink10734479" class=" " href="/the-technology-of-search/" ><span>The Technology of Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper11033984">
+
+    <div id="moduleContent11033984">
+
+              <a id="moduleLink11033984" class=" " href="/publications-and-resources/" ><span>Publications and Resources</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734225">
+
+    <div id="moduleContent10734225">
+
+              <a id="moduleLink10734225" class=" folder-link" href="/professional-services/" ><span>Professional Services</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734225">
+            
+  <li class="module   " id="moduleContentWrapper10734289">
+
+    <div id="moduleContent10734289">
+
+              <a id="moduleLink10734289" class=" " href="/enterprise-search-consulting/" ><span>Enterprise Search Consulting</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734293">
+
+    <div id="moduleContent10734293">
+
+              <a id="moduleLink10734293" class=" " href="/microsoft-enterprise-search/" ><span>Microsoft Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734298">
+
+    <div id="moduleContent10734298">
+
+              <a id="moduleLink10734298" class=" " href="/google-enterprise-search/" ><span>Google Enterprise Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734310">
+
+    <div id="moduleContent10734310">
+
+              <a id="moduleLink10734310" class=" " href="/autonomy/" ><span>Autonomy</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734321">
+
+    <div id="moduleContent10734321">
+
+              <a id="moduleLink10734321" class=" " href="/advanced-technology-group/" ><span>Advanced Technology Group</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734325">
+
+    <div id="moduleContent10734325">
+
+              <a id="moduleLink10734325" class=" " href="/verity-k2/" ><span>Verity K2 (Autonomy)</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734332">
+
+    <div id="moduleContent10734332">
+
+              <a id="moduleLink10734332" class=" " href="/open-source/" ><span>Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734333">
+
+    <div id="moduleContent10734333">
+
+              <a id="moduleLink10734333" class=" " href="/vendor-selection/" ><span>Vendor Selection</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734231">
+
+    <div id="moduleContent10734231">
+
+              <a id="moduleLink10734231" class=" folder-link" href="/products/" ><span>Products</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734231">
+            
+  <li class="module   " id="moduleContentWrapper10734347">
+
+    <div id="moduleContent10734347">
+
+              <a id="moduleLink10734347" class=" " href="/searchtrack-analytics/" ><span>SearchTrack??? Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734356">
+
+    <div id="moduleContent10734356">
+
+              <a id="moduleLink10734356" class=" " href="/unified-federated-manager/" ><span>Unified Federated Mangager</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734374">
+
+    <div id="moduleContent10734374">
+
+              <a id="moduleLink10734374" class=" " href="/xp/" ><span>XPump??? Content Extraction Toolkit</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734236">
+
+    <div id="moduleContent10734236">
+
+              <a id="moduleLink10734236" class=" folder-link" href="/industry-trends/" ><span>Industry Trends</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734236">
+            
+  <li class="module   " id="moduleContentWrapper10734395">
+
+    <div id="moduleContent10734395">
+
+              <a id="moduleLink10734395" class=" " href="/commercial-vs-open-source/" ><span>Commercial vs. Open Source</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734402">
+
+    <div id="moduleContent10734402">
+
+              <a id="moduleLink10734402" class=" " href="/compliance-and-ediscovery/" ><span>Compliance and eDiscovery</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734404">
+
+    <div id="moduleContent10734404">
+
+              <a id="moduleLink10734404" class=" " href="/federated-search/" ><span>Federated Search</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734405">
+
+    <div id="moduleContent10734405">
+
+              <a id="moduleLink10734405" class=" " href="/fix-or-replace/" ><span>Fix or Replace?</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734412">
+
+    <div id="moduleContent10734412">
+
+              <a id="moduleLink10734412" class=" " href="/search-analytics/" ><span>Search Analytics</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734417">
+
+    <div id="moduleContent10734417">
+
+              <a id="moduleLink10734417" class=" " href="/search-security/" ><span>Search Security</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734419">
+
+    <div id="moduleContent10734419">
+
+              <a id="moduleLink10734419" class=" " href="/taxonomies/" ><span>Taxonomies</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734241">
+
+    <div id="moduleContent10734241">
+
+              <a id="moduleLink10734241" class=" folder-link" href="/publications/" ><span>Publications</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734241">
+            
+  <li class="module   " id="moduleContentWrapper10889656">
+
+    <div id="moduleContent10889656">
+
+              <a id="moduleLink10889656" class="offsite-link " href="http://www.enterprisesearchblog.com/" onclick="this.target='new';"><span>Blog</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734446">
+
+    <div id="moduleContent10734446">
+
+              <a id="moduleLink10734446" class=" " href="/newsletter/" ><span>Newsletter</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper11403626">
+
+    <div id="moduleContent11403626">
+
+              <a id="moduleLink11403626" class=" " href="/newsletter?subscribe" ><span>Newsletter - Subscribe</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734438">
+
+    <div id="moduleContent10734438">
+
+              <a id="moduleLink10734438" class=" " href="/glossary/" ><span>Glossary</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734452">
+
+    <div id="moduleContent10734452">
+
+              <a id="moduleLink10734452" class=" " href="/white-papers/" ><span>White Papers</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10889685">
+
+    <div id="moduleContent10889685">
+
+              <a id="moduleLink10889685" class="offsite-link " href="http://www.searchdev.org" onclick="this.target='new';"><span>SearchDev.org</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10889703">
+
+    <div id="moduleContent10889703">
+
+              <a id="moduleLink10889703" class="offsite-link " href="http://www.searchcomponentsonline.com/" onclick="this.target='new';"><span>Search Components Online</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   folder-closed" id="moduleContentWrapper10734254">
+
+    <div id="moduleContent10734254">
+
+              <a id="moduleLink10734254" class=" folder-link" href="/about-us/" ><span>About Us</span></a>
+      
+
+            
+        <div class="folder-wrapper">
+          <ul class="folder" id="folderContent10734254">
+            
+  <li class="module   " id="moduleContentWrapper10734485">
+
+    <div id="moduleContent10734485">
+
+              <a id="moduleLink10734485" class=" " href="/who-we-are/" ><span>Who We Are</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734486">
+
+    <div id="moduleContent10734486">
+
+              <a id="moduleLink10734486" class=" " href="/management-team/" ><span>Management Team</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734488">
+
+    <div id="moduleContent10734488">
+
+              <a id="moduleLink10734488" class=" " href="/clients/" ><span>Clients</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734490">
+
+    <div id="moduleContent10734490">
+
+              <a id="moduleLink10734490" class=" " href="/partners/" ><span>Partners</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+
+          </ul>
+        </div>
+
+      
+
+    </div>
+
+  </li>
+
+
+  <li class="module   " id="moduleContentWrapper10734494">
+
+    <div id="moduleContent10734494">
+
+              <a id="moduleLink10734494" class=" " href="/contact-us/" ><span>Contact</span></a>
+      
+
+      
+
+    </div>
+
+  </li>
+
+</ul>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+    <div id="sectionContent4441092" class="sectionWrapper  "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+       <div class="caption">Search this site:</div> 
+
+      
+        
+          <div class="content-passthrough"><div id="moduleContentWrapper10692138" class="widget-wrapper  widget-type-search"><div id="moduleContent10692138">
+
+
+<form method="get" action="/display/Search">
+
+<div class="search-form-pt-wrapper">
+  <div class="search-form-pt">
+    <span class="queryFieldWrapper"><input type="text" class="text queryField" name="searchQuery" value=""/></span>
+    <span class="queryButtonWrapper"><input type="submit" class="button queryButton" value="&raquo;"/></span>
+    <input type="hidden" name="moduleId" value="10692138"/>
+    <br class="clearer"/>
+  </div>
+</div> 
+
+</form></div></div></div>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+    <div id="sectionContent4471906" class="sectionWrapper  "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+      
+
+      
+        
+          <div class="content-passthrough"><div id="moduleContentWrapper10768593" class="widget-wrapper  widget-type-page"><div id="moduleContent10768593">
+
+
+
+
+
+  <table>
+  <tbody>
+  <tr>
+  
+  <td>
+  <p id="book-link"><strong><span style="color: #174E8D; padding-right: 1px;">Press Release:&nbsp;&nbsp;&nbsp;&nbsp;</span></strong><a id="book-link" href="/storage/Pingar-NIE_PR_110811.pdf" target="_blank"><strong>New Idea Engineering</strong> <img style="float:left; vertical-align: middle; height:40px; width: 107px; padding-top: 5px; padding-right: 10px;" src="/storage/pingar.jpeg">announces partnership with New Zealand???s <strong>Pingar</strong>, a leading provider of unstructured data management solutions.</a></p>
+  </td>
+  </tr>
+  </tbody>
+  </table>
+  
+  <!-- 
+  
+  <td id="book-link-table-td-1">
+  <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FProfessional-Microsoft-Search-SharePoint-Programmer%2Fdp%2F0470584661&tag=newidea-20&linkCode=ur2&camp=1789&creative=9325" target="_blank"><img src="/Storage/Professional-Microsoft-Search-FAST-Search-SharePoint-Search-and-Search-Server-239x300.jpg?__SQUARESPACE_CACHEVERSION=1308707018063" alt="" width="76" height="96" /></a>
+  </td>
+  <td id="book-link-table-td-2">
+  <p id="book-link">
+  <a id="book-link" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FProfessional-Microsoft-Search-SharePoint-Programmer%2Fdp%2F0470584661&tag=newidea-20&linkCode=ur2&camp=1789&creative=9325" target="_blank"><strong>Professional Microsoft Search</strong>: FAST Search, SharePoint Search, and Search Server</a></p>
+  <a href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2FProfessional-Microsoft-Search-SharePoint-Programmer%2Fdp%2F0470584661&tag=newidea-20&linkCode=ur2&camp=1789&creative=9325" target="_blank"><img id="book-link-bn-image" src="/storage/buy_now.gif"></a>
+  </td> 
+  
+  -->
+  
+  <!-- 
+  
+  <SCRIPT charset="utf-8" type="text/javascript" src="http://ws.amazon.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822/US/intergalaticm-20/8001/dbf2c83b-57df-4288-b158-f8f41378e62a"> </SCRIPT> <NOSCRIPT><A HREF="http://ws.amazon.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fintergalaticm-20%2F8001%2Fdbf2c83b-57df-4288-b158-f8f41378e62a&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT> 
+  
+  -->
+</div></div></div>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+    <div id="sectionContent4471883" class="sectionWrapper  "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+      
+
+      
+        
+          <div class="content-passthrough"><div id="moduleContentWrapper10768584" class="widget-wrapper  widget-type-twitter"><div id="moduleContent10768584">
+
+<style type="text/css">
+    <!--
+      #twitter-wrapper-10768584 {
+        display: block;
+        visibility: hidden;
+      }
+            
+    -->
+</style>
+
+<div id="twitter-loading-wrapper-10768584" style="display:none; background:#353535; -moz-border-radius:8px; -webkit-border-radius:8px; height:300px; ">
+  <div id="twitter-loading-img-10768584" style="height:100%; background:url(/universal/images/loading.png) no-repeat center center transparent;" ></div>
+</div>
+
+<div id="twitter-error-wrapper-10768584" style="display:none; background:#353535; -moz-border-radius:8px; -webkit-border-radius:8px; height:300px; ">
+  <a id="twitter-error-img-10768584" style="display:block; height:100%; background:url(/universal/images/loading-refresh.png) no-repeat center center transparent;" 
+    href="javascript:void(0);" onclick="javascript: twitterWidget10768584.show();">&nbsp;</a>
+</div>
+
+
+
+  <div id="twitter-wrapper-10768584" class="twitter-wrapper basic">
+    <div class="twitter-content">
+    
+      <div id="twitter-page-10768584">
+      
+        <div id="tweet-item-10768584-1" class="twitter-item-basic highlight">
+          <div class="twitter-item-content-basic">
+                        <div class="twitter-avatar"><a id="tweet-avatar-link-10768584-1" href="" target="_blank"><img id="tweet-avatar-img-10768584-1" src="" /></a></div>
+            
+                        <div class="twitter-username"><a id="tweet-username-link-10768584-1" href="" target="_blank"></a></div>
+            
+            <span id="tweet-content-10768584-1"></span>
+          </div>
+          <div class="twitter-item-slug">
+                        <div class="twitter-date"><a id="tweet-date-10768584-1" href="" target="_blank"></a></div>
+            
+            <div class="clearer"></div>            
+          </div>
+        </div>
+
+        
+                <div id="tweet-item-10768584-2" class="twitter-item-basic">
+                  <div class="twitter-item-content-basic">
+                                <div class="twitter-avatar"><a id="tweet-avatar-link-10768584-2" href="" target="_blank"><img id="tweet-avatar-img-10768584-2" src="" /></a></div>
+                    
+                                <div class="twitter-username"><a id="tweet-username-link-10768584-2" href="" target="_blank"></a></div>
+                    
+                    <span id="tweet-content-10768584-2"></span>
+                  </div>
+                  <div class="twitter-item-slug">
+                                <div class="twitter-date"><a id="tweet-date-10768584-2" href="" target="_blank"></a></div>
+                    
+                    <div class="clearer"></div>            
+                  </div>
+                </div>
+                              
+      </div>
+
+      
+    
+    </div>
+
+        <div class="twitter-slug">
+      <div class="twitter-link">
+        
+                <a id="followme-link-10768584-1" href="" target="_blank"><img id="followme-avatar-img-10768584-1" class="avatar" src="" /><span id="followme-text-10768584-1"></span></a>
+                
+      </div>
+    </div>
+    
+          
+  </div>
+
+
+
+
+
+
+<script type="text/javascript">
+<!--
+
+  var twitterWidget10768584;
+
+  E.onDOMReady( function() {
+
+    twitterWidget10768584 = new Squarespace.Social.TwitterWidget(10768584, { preset : 'basic-preset', pageSize : 2, followMeText : 'Follow @username', filter : '', filterType : 'any', filterAtReplies: true, filterRetweets : true, userIds : '15856984,' });
+    twitterWidget10768584.show();      
+    
+  });
+  
+  
+//-->
+</script></div></div></div>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+    <div id="sectionContent4471903" class="sectionWrapper  "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+       <div class="caption">Enterprise Search Blog</div> 
+
+      
+        
+          <div class="content-passthrough"><div id="moduleContentWrapper10768587" class="widget-wrapper  widget-type-rss-consume"><div id="moduleContent10768587">
+
+<style type="text/css">
+    <!--
+      #rss-wrapper-10768587 {
+        display: block;
+        visibility: hidden;
+      }
+      
+    -->
+</style>
+
+<div id="rss-loading-wrapper-10768587" style="display:none; background:#353535; -moz-border-radius:8px; -webkit-border-radius:8px; height:300px; ">
+  <div id="rss-loading-img-10768587" style="height:100%; background:url(/universal/images/loading.png) no-repeat center center transparent;" ></div>
+</div>
+
+<div id="rss-error-wrapper-10768587" style="display:none; background:#353535; -moz-border-radius:8px; -webkit-border-radius:8px; height:300px; ">
+  <a id="rss-error-img-10768587" style="display:block; height:100%; background:url(/universal/images/loading-refresh.png) no-repeat center center transparent;" 
+    href="javascript:void(0);" onclick="javascript: rssWidget10768587.show();">&nbsp;</a>
+</div>
+
+
+<div id="rss-wrapper-10768587" class="rss-wrapper">
+
+  <div class="rss-content">
+  
+    <div id="rss-item-10768587-1" class="rss-item highlight">
+            <div class="rss-title"><a id="rss-title-10768587-1" href=""  target="_blank" ></a></div>
+      
+            <div class="rss-date" id="rss-date-10768587-1"></div>
+      
+      <div class="rss-description">
+                <span id="rss-description-10768587-1"></span>
+        
+                <div class="rss-read-more"><a id="rss-read-more-10768587-1" href=""  target="_blank" ></a></div>
+        
+      </div>
+            <div class="rss-author" id="rss-author-10768587-1"></div>
+      
+      
+    </div>
+            
+                  
+
+  </div>
+  
+</div>
+
+<script type="text/javascript">
+<!--
+
+  var rssWidget10768587;
+  
+  E.onDOMReady( function() {
+
+    rssWidget10768587 = new Squarespace.Social.RssWidget(10768587, { pageSize : 1, readMoreText : 'Read More ???', sourceText : 'via' });
+    rssWidget10768587.show();      
+    
+  });
+  
+  
+//-->
+</script></div></div></div>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+  
+
+</div></div></div></div></div></div>
+  <div id="sidebar2Wrapper" class="verticalNavigationBarWrapper"><div class="iw-vnb1"><div class="iw-vnb2"><div class="iw-vnb3"><div class="iw-vnb4"><div id="sidebar2" class="verticalNavigationBar">
+
+  
+
+    <div id="sectionContent4440446" class="sectionWrapper  "><div class="iw-s1"><div class="iw-s2"><div class="iw-s3"><div class="iw-s4"><div class="section">
+
+       <div class="caption">Search this site:</div> 
+
+      
+        
+          <div class="content-passthrough"><div id="moduleContentWrapper10690542" class="widget-wrapper  widget-type-search"><div id="moduleContent10690542">
+
+
+<form method="get" action="/display/Search">
+
+<div class="search-form-pt-wrapper">
+  <div class="search-form-pt">
+    <span class="queryFieldWrapper"><input type="text" class="text queryField" name="searchQuery" value=""/></span>
+    <span class="queryButtonWrapper"><input type="submit" class="button queryButton" value="&raquo;"/></span>
+    <input type="hidden" name="moduleId" value="10690542"/>
+    <br class="clearer"/>
+  </div>
+</div> 
+
+</form></div></div></div>
+
+        
+
+      
+  
+    </div></div></div></div></div></div>
+
+  
+
+  
+
+</div></div></div></div></div></div>
+  
+  
+
+  <div id="contentWrapper"><div id="content">
+    
+          
+    
+
+
+  
+
+ 
+  
+    <script type="text/javascript" src="/storage/pre-content.js"></script>
+
+<span id="breadcrumbs"><a href="/newsletter">&laquo; NIE Newsletter</a></span>
+
+<h2>Rediscover the Poor Man's Entity Extraction in Verity K2</h2>
+
+<p id="newsletter-small">Last Updated Mar 2009</p>
+<p id="newsletter-small">By: Mark Bennett & Miles Kehoe, New Idea Engineering, Inc., Volume 2 - Number 8 - Fall 2005</p>
+
+<div id="newsletter-content">
+
+<p>Verity has released its Extractor product to provide some really interesting capabilities such as identifying and extracting content into specific fields and zones. Some old timers with Verity remember the 'TDE' capability that provided similar  although less sophisticated capabilities years ago. For those of you who have forgotten about TDE, and for those of you who  have started using Verity in the last few years and have not used it, you'll be glad to hear the TDE capability is still included  in K2; the Collection Reference Guide still documents the capabilities even in K2 6.0.</p>
+<p>The bad news is that none of the sample style sets use TDE at all. The good news is that if you want to try a "poor man's entity extraction", this article will show you how.</p>
+
+<h3>Background</h3>
+<p>From its earliest version, Verity featured the capability to identify and extract field values based on regular expressions. Back in those pre-web days, documents often had what we would now call metadata  embedded in the text. Consider  the simple document shown in Figure 1.</p>
+<div class="indented"><pre>Title:	Meeting next Tuesday<br>	Author:	Milo <br>	Dept:	Marketing<br>	Date:	July 3, 1995<br><br>	Let's meet next week to discuss the search project. We need to identify <br>	features and budgets. If you cannot make it at 2:00PM July 19 call me.<br>	You can reach me at (408) 828-4592. See you then!</pre></div>
+<center><strong>Figure 1: Simple Document</strong></center>
+<p>Now some of you old-timers might point out that the zone filter will do much of the extraction you might want when the document is so structured. But even the zone filter won't let you extract the phone number in the document shown in Figure 1.  For that, you need to go back to the style.tde features.</p>
+
+<h3>Introduction to TDE</h3>
+<p>The acronym TDE stands for 'Topic Document Entry', the name of a product that processed and extracted fielded data based on regular expressions and would provide an interactive review capability. Now you real old timers will remember that TDE was really a reincarnation of the old "DMV" file, which let you describe patterns using regular expression syntax (regex) to identify metadata to be extracted at index time. (If you are a true old timer and  think you remember how the file came to have the DMV extension, email me and tell me your guess. Perhaps I'll publish the most creative - and tell you  all the correct answer.)</p>
+
+<h3>Style.TDE</h3>
+<p>Enter Style.TDE. It was first introduced in the 1995 timeframe, and as I have suggested, still works today. Given the text format shown in Figure 1  above, let's assume you want to extract the title, the author, the author's department, the date, and, if present, the phone number. To make it interesting,  let's also assume that any document that has no author should not be indexed at all; and let's decide that if there is no department present, the  document should be marked as 'Corporate'.</p>
+<p>First, we need to identify fields that we want to use in the style.sfl or create new user defined fields in the style.ufl file. (Granted this is only a suggested  spot to put user fields, but it's nicer to play within the Verity suggestions). I'll assume you know how to create fields called PHONE, EMAIL, and  DEPARTMENT, and we'll simply use the standard fields TITLE, AUTHOR, and DATE. Note that by using standard fields. there will be  some <a href="#cons">consequences</a> later on as we index Office and PDF documents.</p>
+<p><strong><em>Note: You can download a ZIP file that contains the files describes in this article which you can download, unzip, and use as you examine this article. Go to <a href="http://www.ideaeng.com/pub/entsrch/files/tde.zip">http://www.ideaeng.com/pub/files/tde.zip</a> and unzip the files into a working directory. </em></strong></p>
+<p>Next, create a test area where you can create collections without impacting your production environment. We would suggest you create a  directory somewhere out of the way, as long as the Verity binary directory is in your system path. In this example, we create a "TDE" directory  in the root of the C: drive, and create a style and docs directory under the root. We'll also create a file called flist that will contain the names of the files we want to index, as shown in Figure 2.</p>
+<div class="indented"><pre>c:\tde<br>		c:\tde\style\<br>		c:\tde\docs\<br>		c:\tde\flist</pre></div>
+<p style="text-align: center;"><strong>Figure 2 - Suggested Directory Layout</strong></p>
+
+<p>Generally, we recommend you copy master style files from the Verity common styles directory into your new working <strong><em>style</em></strong> directory.</p>
+<p>Put your test documents in the <strong><em>docs</em></strong>  directory; and create <strong><em>flist</em></strong> that contains the names of the files to include.  In this sample, flist contains the files from the <strong><em>docs</em></strong> directory as shown in Figure 3</p>
+<div class="indented"><pre>docs/doc_one.txt<br>	docs/doc_two.txt<br>	docs/doc_three.txt<br>	docs/doc_four.txt<br>	docs/doc_five.txt<br>	docs/doc_six.doc<br>	docs/doc_seven.pdf</pre></div>
+<p style="text-align: center;"><strong>Figure 3 - flist Contents</strong></p>
+
+<p>Why not give the fully qualified path? Well, if you specify fully qualified paths, you will always need to have the documents for this collection in c:\tde\docs. If you use relative paths, you can move this entire tde directory around anywhere you ant and the collection will work fine.</p>
+<p>Now, in the style directory, create a new text file called style.tde that matches the one shown in  Figure 4</p>
+<div class="indented"><pre># style.tde to parse title, author, phone numbers and email address<br><br>	$control: 1 <br>	tde: <br>	{ <br>	pre-process: <br>		{ <br>		datamap: <br>			{ <br>		#<br>		# Define macros for three and four byte strings of numbers<br>				define: TRIDIG		"[0-9][0-9][0-9]"<br>				define: FOURDIG		"[0-9][0-9][0-9][0-9]"<br>		#<br>		# And define the image of a 'phone number'<br>				define: PNum "[(]{TRIDIG}[)][ \t]*{TRIDIG}-{FOURDIG}"<br>	<br>		#<br>		# Now define the field patterns<br>				field: Title PATTERN "^Title: &lt;.*&gt;" <br>				field: Author PATTERN "^Author: &lt;.*&gt;" <br>					/required = yes <br>				field: Phone PATTERN "{PNum}"<br>					/which=ALL<br>					/string-between = " , "<br>				field: Email PATTERN "[ \t]*[A-Za-z0-9]+[\@][A-Za-z0-9\.]+"<br>				field: Department PATTERN "Dept: &lt;.*&gt;" <br>					/default="Corporate"<br>				} <br>				<br>		} <br>	} <br>	$$</pre></div>
+<p style="text-align: center;"><strong>Figure 4 - style.tde</strong></p>
+
+<p>Let's take a look at this style file one section at a time. Once we have defined the syntax requirements so K2 can  recognize the file, we define three 'macros'. These macros provide an easy way to name patterns we intend to  use throughout our regular expressions. The three we define here are:</p>
+<div class="indented"><pre>		# Define macros for three and four byte strings of numbers<br>				define: TRIDIG		"[0-9][0-9][0-9]"<br>				define: FOURDIG	"[0-9][0-9][0-9][0-9]"<br>		#<br>		# And define the image of a 'phone number'<br>				define: PNum "[(]{TRIDIG}[)][ \t]*{TRIDIG}-{FOURDIG}"</pre></div>
+<p>Because we will be looking for phone numbers, we want to be able to easily recognize three and four digit strings of number. In the above macro definitions, we are defining in regex terms what a three digit sequence would look like (TRIDIG) and what a four digit sequence would look like.</p>
+<p>Furthermore, we put these initial macros together to define yet another macro: the format of a fully qualified (North American) phone number of the format (xxx) yyy-zzzz. The space between the area code and the exchange number can be one or more space or tabs; but the hyphen is required between the exchange the  number. The pattern for our fully qualified phone number we will refer to as PNum later is:</p>
+<div class="indented"><pre>[(]       :  A single character, a left parenthesis<br>{TRIDIT}  :  Based on our earlier macro, a three digit sequence of numbers<br>[)]       :  A single charavter, a right parenthesis<br>[ \t]*    :  A single space character or a tab (\t), repeated zero or more times (*)<br>{TRIDIT}  :  A three digit sequence of numbers representing the phone exchange<br>-         :  The require hyphen between exchange and number; and finally<br>{FOURDIG} :  The four digit macro above representing a sequence of four numeric characters</pre></div>
+
+<p>Now that we have the macros defined, let's get to work on the fields themselves:</p>
+<div class="indented"><pre>field: Title PATTERN "^Title:&lt;.*&gt;" <br>				field: Author PATTERN "^Author:&lt;.*&gt;" <br>					/required = yes <br><br>				field: Department PATTERN "Dept:&lt;.*&gt;" <br>					/default="Corporate"</pre></div>
+
+<p>These three fields all use the same general pattern: A line starting with the text label; a colon; then everything after that colon goes into the field. For example, the first line is read as "When the line starts with 'Title:' everything after the colon should be extracted into the field TITLE. Here's the pattern breakdown:</p>
+
+<div class="indented"><pre><br>^         :  Start of line 'anchor' such that the text must start in column 1<br>Title:    :  The text to match in the document.<br>&lt;         :  Mark the start of data to be extracted<br>.*        :  Zero or more (*) of any character up to the end of line (CR/LF on Windows<br>	 	or LF on Unix)<br>&gt;         :  Mark the end of data to be extracted</pre></div>
+
+<p>If we omitted the angle brackets &lt; and &gt; from the pattern, we would get everything on the line, including  the label - for example, 'Title:' as well as the actual title. Note that the field names are case insensitive here; but the actual string patterns to match are case sensitive. Also, as with DEPARTMENT, the actual pattern does not need to be the same as the field name.</p>
+<p>We've provided two TDE qualifiers here as well. We've arbitrarily decided that the AUTHOR field is required, so any documents we process that do not have a value for AUTHOR will be skipped during indexing. We've also decided that any document with no value in the DEPARTMENT field will get a value of "Corporate". This capability helps us handle poor content metadata, at least a bit.</p>
+<p>Now we're ready for the next line, the one that extracts the phone numbers. It uses the macro we defined earlier  to define the pattern:</p>
+
+<div class="indented"><pre>field: Phone PATTERN "{PNum}"<br>					/which=ALL<br>					/string-between = " , "</pre></div>
+
+<p>What this is saying is any string of test that matches the pattern defined in the PNum macro should be extracted and stored in the PHONE field. What happens is more than one phone number is present? For that, we use the Verity TDE  'which' qualifier that says, in this case, we take all of them; and separate them by a comma. There are a number of options of how to process the fields; refer to the Verity Collection Building Guide for more details.</p>
+<p>Finally., we look at the pattern for recognizing email. Because we don't use any macros, the pattern itself is a bit longer:</p>
+
+<div class="indented"><pre>field: Email PATTERN "[ \t]*[A-Za-z0-9]+[\@][A-Za-z0-9\.]+"</pre></div>
+
+<p>This will look for any valid string of characters - letters and numbers - fo9llowed by a string of letters and numbers and period  characters.</p>
+
+<div class="indented"><pre>[ \t]*          :  A single space character or a tab (\t), repeated zero or more times (*)<br>[A-Za-z0-9]+    :  One or more characters in the range between A to Z., a to z, and 0 to 9<br>[\@]            :  A single @ character escaped with the backslash to avoid regex confusion<br>[ \t]*          :  A single space character or a tab (\t), repeated one or more times (*)<br>[A-Za-z0-9\.]+  :  One or more characters or periods up until the next character not in<br>			this list, likely a space<br></pre></div>
+
+<p>This will find strings like "mk@testcase.com' and 'jw@nie.ab.ca'.</p>
+<p><strong>Bringing it together</strong> If you set up the files as shown, or download the zip file, you are ready to create your collection. The zip file has a  batch file to build the collection from the included sample documents; and a batch file to run rcvdk with a stored command line  input. To do it all manually, simply enter:</p>
+<div class="indented"><pre>mkvdk -collection phone -create -style style<br>	mkvdk -collection phone -extract @flist</pre></div>
+<p>The magic here is the 'extract' option. It tells mkvdk to extract fields as directed in style.tde as it populates the collection from the files listed in flist. Wen you run this on the zip file documents, you will see one of the documents is rejected because it has no AUTHOR. To test the collection, use the run.bat file included in the zip file, or run rcvdk manually:</p>
+<div class="indented"><pre>x<br>fields author 15 email 18 department 10 title 32 doc_fn 20 phone 30<br>s<br>r</pre></div>
+<p>The output you should see looks something like those shown in Figure 5:</p>
+<div class="indented"><pre>rcvdk  Verity, Inc. Version 5.5.0<br>Attaching to collection: phone<br>Successfully attached to 1 collection.<br>Type 'help' for a list of commands.<br>RC&gt; x<br>Expert mode enabled<br>RC&gt; fields author 15 email 18 department 10 title 32 doc_fn 20 phone 30<br>RC&gt; s<br>Search update: finished (100%).  Retrieved: 7(7)/7.     /7.<br>Retrieved: 7(7)/7<br>RC&gt; r  <br>Number  author          email         department title         doc_fn           phone<br>1:      No Author Given                               doc_seven.txt        docs/doc_seven.pdf<br>2:      Zack (MS WORD)  zt@ideaeng.com     Dev                             docs/doc_six.doc <br>3:      Janet Smith                        Corporate  Test document five   docs/doc_five.txt<br>4:      Zack Taylor     zt@ideaeng.com     Dev        Test document four   docs/doc_four.txt<br>5:      Milo            mbk@ideaeng.com    Marketing  Test document three  docs/doc_three.txt   <br>	(408) 828-4592 , (408) 828-5555<br>6:      Jon Wilson      jw@ideaeng.com     Sales      Test document two    docs/doc_two.txt     <br>	(408) 446-3460<br>7:      Janet Smith     js@ideaeng.com     Sales      Simple document      docs/doc_one.txt     <br>	(800) 555-1212<br>RC&gt; Done</pre></div>
+<center><strong>Figure 5 - Search Results</strong></center>
+<p>Note that document 3 from Janet Smith has no email and no department; so the default department value "Corporate" was assigned during the indexing process. Note also that multiple phone numbers were found in document 5 from Milo, so both are listed.</p>
+<p><a name="#cons"></a> Note in the results shown in Figure X that for Word and PDF documents, the TITLE field is empty and doe not show the default value you might expect. This happens because the automatic field extraction in Office and PDF  documents overrides out TDE-defined pattern. If it's important that your TDE-defined pattern override the default document behavior, use alternate fields in your style.ufl file rather than the default ones in style.sfl.</p>
+
+<h3>Summary</h3>
+<p>Well, this is just a hint at the power you have available to you in the style.tde file. Refer to the collection building documentation for K2; and be aware that not all regex engines are exactly the same, so you may find Verity's  patterns to be a bit different than what you are familiar with. IN any case, feel free to email us if you have and  questions or problems with style.tde. We're happy to help spread the news!</p>
+
+</div>
+
+<script type="text/javascript" src="/storage/post-content.js"></script>
+
+
+  
+
+
+</div></div> <!-- Content -->
+  

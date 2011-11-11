@@ -14,11 +14,12 @@ namespace Spider {
 		
 		string _page_content;
 		
-		public SpiderPage(string url, List<SpiderLink> linking_to_links, List<SpiderLink> referred_by_links) {
+		public SpiderPage(string url, List<SpiderLink> linking_to_links, List<SpiderLink> referred_by_links, string page_content) {
 			this._url = url;
             this._alias_urls = new List<string>();
 			this._linking_to_links = linking_to_links;
 			this._referred_by_links = referred_by_links;
+            this._page_content = page_content;
 		}
 
         public SpiderPage() {
@@ -65,7 +66,7 @@ namespace Spider {
 			this._page_content = page_content;
 		}
 		
-		public void getPageContent() {
+		public string getPageContent() {
 			return this._page_content;
 		}
 	}
