@@ -528,6 +528,10 @@ namespace Spider {
                         }
                     }
                     while (count > 0);
+
+					// add the source into the candidate page object
+					candidate_page.setPageContent(sb.ToString());
+					
                     // parse the page for links
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(sb.ToString());

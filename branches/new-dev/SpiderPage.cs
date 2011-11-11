@@ -12,6 +12,8 @@ namespace Spider {
 		List<SpiderLink> _linking_to_links;
 		List<SpiderLink> _referred_by_links;
 		
+		string _page_content;
+		
 		public SpiderPage(string url, List<SpiderLink> linking_to_links, List<SpiderLink> referred_by_links) {
 			this._url = url;
             this._alias_urls = new List<string>();
@@ -24,6 +26,7 @@ namespace Spider {
             this._alias_urls = new List<string>();
             this._linking_to_links = new List<SpiderLink>();
             this._referred_by_links = new List<SpiderLink>();
+			this._page_content = "";
         }
 
 		public void setUrl(string url) {
@@ -56,6 +59,14 @@ namespace Spider {
 		
 		public void addReferredByLink(SpiderLink new_link) {
 			this._referred_by_links.Add(new_link);
+		}
+		
+		public void setPageContent(string page_content) {
+			this._page_content = page_content;
+		}
+		
+		public void getPageContent() {
+			return this._page_content;
 		}
 	}
 }
