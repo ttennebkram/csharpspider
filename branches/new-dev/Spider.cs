@@ -203,6 +203,9 @@ namespace Spider {
             int ret = -1;
             // need to lock here because we're depending on _master_results.Count
             lock (this._master_results) {
+
+                // *** DEFINITELY a/two for loop(s) replicating something a better efficient data
+                // structure would do better ***
                 for (int i = 0; i < this._master_results.Count; i++) {
                     List<string> search_urls = new List<string>();
                     // put the page's aliases and its own URL in search_urls- the URLs to compare against
@@ -230,6 +233,9 @@ namespace Spider {
             int ret = -1;
             // need to lock here because we're depending on _candidate_pages.Count
             lock (this._candidate_pages) {
+
+                // for-loop to be replaced by some more efficient implimentation of a
+                // data-structre/search method
                 for (int i = 0; i < this._candidate_pages.Count; i++) {
                     if (url == _candidate_pages.ElementAt(i)._candidate_getUrl()) {
                         // we found the page! return its index...
@@ -303,6 +309,8 @@ namespace Spider {
             bool ret = true;
             // need to lock so that nobody can change _thread_status while we're checking
             lock (this._thread_status) {
+
+                // good example of the more efficient way to search our current data structure
                 if (this._thread_status.FindIndex(1, delegate(int i) { return i == 1; }) > 0) {
                     ret = false;
                 }
@@ -346,6 +354,7 @@ namespace Spider {
                     List<string[]> added_candidate_urls = new List<string[]>();
 
                     int candidate_page_count = spider_object._candidate_pages.Count;
+                    // iterative for-loop, don't see a better way to do this really (or why we'd want one)...
                     for (int i = 0; i < candidate_page_count; i++) {
                         bool found = false;
                         _SpiderPageCandidate current_candidate_page = spider_object.getCandidatePageAtIndex(i);
@@ -382,6 +391,7 @@ namespace Spider {
                                     found = true;
                                     SpiderPage real_page = spider_object.getPageAtIndex(real_page_index);
                                     List<SpiderLink> current_candidate_referred_links = current_candidate_page.getReferredByLinks();
+                                    // another iterative for-loop, doesn't need to be improved really afaik?
                                     for (int k = 0; k < current_candidate_referred_links.Count; k++) {
                                         real_page.addReferredByLink(current_candidate_referred_links.ElementAt(k));
                                     }
@@ -417,6 +427,8 @@ namespace Spider {
                         if (current_link.isLegalLink()) {
                             // see if we've made a new candidate page for this link already
                             int link_index = -1;
+                            // for-loop being used for search, DEFINITELY can be improved with some
+                            // better data-structure etc.
                             for (int y = 0; y < new_candidate_pages.Count; y++) {
                                 if (new_candidate_pages.ElementAt(y)._candidate_getUrl() == current_link.getNormalizedUrl()) {
                                     link_index = y;
@@ -447,6 +459,7 @@ namespace Spider {
                     }
 
                     // create a new fetchPage() worker thread for every new candidate page we made
+                    // iterative for-loop, seems fine...
                     for (int p = 0; p < new_candidate_pages.Count; p++) {
                         spider_object._candidate_pages.Add(new_candidate_pages.ElementAt(p));
                         spider_object.addThreadStatus();
