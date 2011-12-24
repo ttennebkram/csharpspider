@@ -199,7 +199,6 @@ namespace Spider {
          *      @url            - the URL to search for
          */
 		public int findPageIndex(string url) {
-			this.writeStatus("running findPageIndex()");
             int ret = -1;
             // need to lock here because we're depending on _master_results.Count
             lock (this._master_results) {
@@ -311,6 +310,7 @@ namespace Spider {
             lock (this._thread_status) {
 
                 // good example of the more efficient way to search our current data structure
+				// ... to work on: use delegates to replace lots of the for-loops currently in place
                 if (this._thread_status.FindIndex(1, delegate(int i) { return i == 1; }) > 0) {
                     ret = false;
                 }
