@@ -112,7 +112,7 @@ namespace New_Spider {
                     	for (int k = 0; k < curr_links.Count; k++) {
                         	string curr_link_url = curr_links.ElementAt(k).getNormalizedUrl();
                         	if (!curr_links.ElementAt(k).isLegalLink()) {
-                            	curr_link_url = "< illegal link not followed >";
+                            	curr_link_url = "< link not followed >";
                         	}
                         	System.Console.WriteLine("\t\t" + curr_link_url);
                         	System.Console.WriteLine("\t\t\t original href text: " + curr_links.ElementAt(k).getOriginalUrl());
