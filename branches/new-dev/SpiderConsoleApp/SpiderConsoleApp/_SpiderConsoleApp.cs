@@ -30,7 +30,7 @@ namespace New_Spider {
 		}
 		
 		static void helpMessage() {
-            System.Console.WriteLine("\n SpiderConsoleApp.exe [n_threads] [n_ms_niceness] [root_url] [start_url]\n");
+            System.Console.WriteLine("\n SpiderConsoleApp.exe n_threads n_ms_niceness root_url [start_url]\n");
             System.Console.WriteLine(" n_threads:     max number of threads to be in use at once");
             System.Console.WriteLine(" n_ms_niceness: niceness factor in ms to wait between http requests");
             System.Console.WriteLine(" root_url:      the root url");
@@ -42,9 +42,7 @@ namespace New_Spider {
             System.Console.WriteLine("\n **** Incorrect arguments, run 'SpiderConsoleApp.exe help' for help. ****");
 		}
 		
-		static void doSpider(string[] args) {
-			bool parse_success = true;
-			
+		static void doSpider(string[] args) {			
 			int n_threads = 0;
 			int n_ms_timeout = 0;
 			string root_url = "";
@@ -61,21 +59,34 @@ namespace New_Spider {
 				}
 			}
 			catch (Exception e) {
-				parse_success = false;
 				System.Console.WriteLine("ERROR: " + e.Message);
 				System.Console.WriteLine("run 'SpiderConsoleApp.exe help' for help.");
+                Environment.Exit(1);  // Java: System.exit(1);
 			}
 			
-			if (parse_success) {
-            	Spider.Spider s = new Spider.Spider(root_url, start_url, n_ms_timeout, n_threads);
-            	s.spider();
+            Spider.Spider s = new Spider.Spider(root_url, start_url, n_ms_timeout, n_threads);
 
-            	List<SpiderPage> results = null;
-            	do {
-                	results = s.getResults();
-            	} while (results == null);
+            // Run the spider and wait for results
+            s.spider();
+            List<SpiderPage> results = waitForResults(s);
 
-            	for (int i = 0; i < results.Count; i++) {
+            printResults(results);
+		}
+
+        static List<SpiderPage> waitForResults(Spider.Spider s)
+        {
+            List<SpiderPage> results = null;
+            do
+            {
+                results = s.getResults();
+            } while (results == null);
+
+            return results;
+        }
+
+        static void printResults( List<SpiderPage> results )
+        {
+                for (int i = 0; i < results.Count; i++) {
                 	SpiderPage curr = results.ElementAt(i);
                 	List<string> curr_aliases = curr.getAliasUrls();
                 	List<SpiderLink> curr_links = curr.getLinkingToLinks();
@@ -129,7 +140,7 @@ namespace New_Spider {
                     	System.Console.WriteLine("\t\t\t original href text: " + curr_refs.ElementAt(q).getOriginalUrl());
                 	}
             	}
-        	}
-		}
+
+        }
     }
 }
